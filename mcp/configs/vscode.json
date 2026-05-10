@@ -1,0 +1,8 @@
+{
+  "mcp.servers": {
+    "bee": {
+      "command": "python",
+      "args": ["-m", "bee.mcp_server"]
+    }
+  }
+}
