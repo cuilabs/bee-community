@@ -11,6 +11,8 @@
 | Path | What |
 |---|---|
 | [`mcp/`](./mcp) | Bee MCP Server install instructions for Claude Desktop, Cursor, VS Code, Zed, Windsurf |
+| [`sdks/typescript/`](./sdks/typescript) | Pointer + quickstart for `@cuilabs/bee` (live on npm) |
+| [`sdks/python/`](./sdks/python) | Pointer + quickstart for `bee-sdk` (PyPI org pending — install from GitHub for now) |
 | [`examples/typescript/`](./examples/typescript) | Working `@cuilabs/bee` SDK examples (quickstart, streaming, vision) |
 | [`examples/python/`](./examples/python) | Working `bee-sdk` examples |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | How to file an issue, propose a change, or run a workshop on Bee |
@@ -18,12 +20,15 @@
 ## SDKs
 
 ```bash
-# TypeScript / JavaScript / Node / Deno / Bun / browsers
+# TypeScript / JavaScript / Node / Deno / Bun / browsers — live on npm
 npm install @cuilabs/bee
 
-# Python (3.10+)
-pip install bee-sdk
+# Python (3.10+) — install from GitHub while the PyPI `cuilabs` org
+# approval is pending; pip install bee-sdk will resolve once it lands.
+pip install "git+https://github.com/cuilabs/bee.git#subdirectory=sdks/python"
 ```
+
+Full install + quickstart on the marketing site: [bee.cuilabs.io/docs/sdks](https://bee.cuilabs.io/docs/sdks).
 
 ## MCP Server (Claude Desktop, Cursor, VS Code…)
 
