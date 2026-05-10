@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "bee": {
+      "command": "python",
+      "args": ["-m", "bee.mcp_server"],
+      "env": { "BEE_DEVICE": "mps" }
+    }
+  }
+}
