@@ -1,0 +1,9 @@
+{
+  "mcp": {
+    "bee": {
+      "type": "local",
+      "command": ["uvx", "--from", "bee-sdk", "bee-mcp"],
+      "environment": { "BEE_API_KEY": "bee_sk_..." }
+    }
+  }
+}

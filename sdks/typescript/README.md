@@ -1,6 +1,6 @@
 # @cuilabs/bee (TypeScript)
 
-Pointer page for the TypeScript / JavaScript SDK. The package source lives in the main Bee repo at [`sdks/typescript/`](https://github.com/cuilabs/bee/tree/master/sdks/typescript) and ships to npm on every release.
+Pointer page for the TypeScript / JavaScript SDK. The package is published on npm as [`@cuilabs/bee`](https://www.npmjs.com/package/@cuilabs/bee) and ships on every release.
 
 ## Install
 
@@ -31,5 +31,4 @@ console.log(out.choices[0].message.content);
 
 - Marketing-site install + code samples: [bee.cuilabs.io/docs/sdks](https://bee.cuilabs.io/docs/sdks)
 - Working examples (quickstart, streaming, vision): [`examples/typescript/`](../../examples/typescript)
-- Source: [github.com/cuilabs/bee/tree/master/sdks/typescript](https://github.com/cuilabs/bee/tree/master/sdks/typescript)
 - npm: [npmjs.com/package/@cuilabs/bee](https://www.npmjs.com/package/@cuilabs/bee)

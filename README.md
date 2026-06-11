@@ -6,13 +6,16 @@
 [![PyPI](https://img.shields.io/pypi/v/bee-sdk.svg)](https://pypi.org/project/bee-sdk/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 
+<!-- mcp-name: io.github.cuilabs/bee -->
+
 ## What's here
 
 | Path | What |
 |---|---|
-| [`mcp/`](./mcp) | Bee MCP Server install instructions for Claude Desktop, Cursor, VS Code, Zed, Windsurf |
+| [`mcp/`](./mcp) | Bee MCP Server install instructions for Claude Desktop, Cursor, VS Code, Zed, Windsurf, OpenCode |
+| [`llms-install.md`](./llms-install.md) | AI-agent-readable MCP install guide (Cline & friends) |
 | [`sdks/typescript/`](./sdks/typescript) | Pointer + quickstart for `@cuilabs/bee` (live on npm) |
-| [`sdks/python/`](./sdks/python) | Pointer + quickstart for `bee-sdk` (PyPI org pending — install from GitHub for now) |
+| [`sdks/python/`](./sdks/python) | Pointer + quickstart for `bee-sdk` (live on PyPI) |
 | [`examples/typescript/`](./examples/typescript) | Working `@cuilabs/bee` SDK examples (quickstart, streaming, vision) |
 | [`examples/python/`](./examples/python) | Working `bee-sdk` examples |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | How to file an issue, propose a change, or run a workshop on Bee |
@@ -23,16 +26,21 @@
 # TypeScript / JavaScript / Node / Deno / Bun / browsers — live on npm
 npm install @cuilabs/bee
 
-# Python (3.10+) — install from GitHub while the PyPI `cuilabs` org
-# approval is pending; pip install bee-sdk will resolve once it lands.
-pip install "git+https://github.com/cuilabs/bee.git#subdirectory=sdks/python"
+# Python (3.10+) — live on PyPI; also ships the `bee-mcp` MCP server
+pip install bee-sdk
 ```
 
 Full install + quickstart on the marketing site: [bee.cuilabs.io/docs/sdks](https://bee.cuilabs.io/docs/sdks).
 
 ## MCP Server (Claude Desktop, Cursor, VS Code…)
 
-Bee ships an MCP server that exposes 11 domain-specialised tools (chat, code explanation, security audit, threat modelling, quantum circuits, smart-contract review, paper critique, …) over the Model Context Protocol.
+Bee ships an MCP server that exposes 11 domain-specialised tools (chat, code explanation, security audit, threat modelling, quantum circuits, smart-contract review, paper critique, …) over the Model Context Protocol. Listed on the [official MCP Registry](https://registry.modelcontextprotocol.io) as `io.github.cuilabs/bee`.
+
+```bash
+pip install bee-sdk          # provides the `bee-mcp` console script
+export BEE_API_KEY=bee_sk_…  # create at bee.cuilabs.io/app/account/api-keys
+bee-mcp                      # stdio transport — what every desktop client uses
+```
 
 See [mcp/](./mcp) for per-client configs, or the marketing page at [bee.cuilabs.io/docs/mcp](https://bee.cuilabs.io/docs/mcp).
 
