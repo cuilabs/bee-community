@@ -2,8 +2,15 @@
   "mcp": {
     "bee": {
       "type": "local",
-      "command": ["uvx", "--from", "bee-sdk", "bee-mcp"],
-      "environment": { "BEE_API_KEY": "bee_sk_..." }
+      "command": [
+        "uvx",
+        "--from",
+        "bee-sdk@latest",
+        "bee-mcp"
+      ],
+      "environment": {
+        "BEE_API_KEY": "bee_sk_..."
+      }
     }
   }
 }

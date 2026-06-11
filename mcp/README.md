@@ -43,7 +43,7 @@ export BEE_API_KEY=bee_sk_...
 bee-mcp --help
 ```
 
-No-install alternative (used by the configs below): `uvx --from bee-sdk bee-mcp`.
+No-install alternative (used by the configs below): `uvx --from "bee-sdk@latest" bee-mcp`.
 
 ## Wire your client
 
