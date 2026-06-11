@@ -27,7 +27,7 @@ pip install bee-sdk
 ```
 
 Alternative without a persistent install (preferred if `uv` is available):
-use `uvx --from bee-sdk bee-mcp` as the command in Step 3 and skip pip entirely.
+use `uvx --from "bee-sdk@latest" bee-mcp` as the command in Step 3 and skip pip entirely.
 
 ## Step 2 — Verify the server starts
 
@@ -49,7 +49,7 @@ real API key:
   "mcpServers": {
     "bee": {
       "command": "uvx",
-      "args": ["--from", "bee-sdk", "bee-mcp"],
+      "args": ["--from", "bee-sdk@latest", "bee-mcp"],
       "env": { "BEE_API_KEY": "bee_sk_..." }
     }
   }
