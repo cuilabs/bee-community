@@ -1,11 +1,13 @@
 # Bee MCP Server
 
-Connect Bee to **Claude Desktop**, **Claude Code**, **Cursor**, **VS Code**, **Zed**, or **Windsurf** via the [Model Context Protocol](https://modelcontextprotocol.io) — Anthropic's open standard for LLM ↔ tool integration.
+Connect Bee to **Claude Desktop**, **Claude Code**, **Cursor**, **VS Code**, **Zed**, **Windsurf**, or **OpenCode** via the [Model Context Protocol](https://modelcontextprotocol.io) — Anthropic's open standard for LLM ↔ tool integration.
+
+Listed on the [official MCP Registry](https://registry.modelcontextprotocol.io) as **`io.github.cuilabs/bee`**.
 
 | Transport | Status |
 |---|---|
 | stdio | ✅ supported (every desktop MCP client uses this) |
-| HTTP | 🚧 coming soon (`--http <port>` is a stub today; see [bee.cuilabs.io/roadmap](https://bee.cuilabs.io/roadmap) Stage 3) |
+| HTTP | 🚧 coming soon (`--http <port>` exits with a clear error today; see [bee.cuilabs.io/roadmap](https://bee.cuilabs.io/roadmap)) |
 
 ## Tools exposed (11)
 
@@ -23,37 +25,53 @@ Connect Bee to **Claude Desktop**, **Claude Code**, **Cursor**, **VS Code**, **Z
 | `bee_smart_contract_review` | Smart-contract audit (SWC-Registry framing) | blockchain |
 | `bee_paper_critique` | Literature review / methodology critique | research |
 
-Resources: `bee://status` (active domain + loaded adapter inventory), `bee://domains` (full domain list).
+Resources: `bee://status` (gateway connectivity + auth status), `bee://domains` (full domain list).
 
-## Install
+## Install (hosted — recommended)
+
+The server ships inside the [`bee-sdk`](https://pypi.org/project/bee-sdk/) Python package (zero extra dependencies) and forwards every tool call to the hosted Bee gateway — no GPU, no model download, no engine checkout.
 
 ```bash
-# 1. Clone Bee + install the Python package (engine + MCP server live together)
-git clone https://github.com/cuilabs/bee
-cd bee
-pip install -e .
+# 1. Install (Python 3.10+)
+pip install bee-sdk
 
-# 2. Verify the MCP server runs
-python -m bee.mcp_server --help
+# 2. Get an API key (the free Cell tier works)
+#    -> https://bee.cuilabs.io/app/account/api-keys
+export BEE_API_KEY=bee_sk_...
+
+# 3. Verify it runs
+bee-mcp --help
 ```
+
+No-install alternative (used by the configs below): `uvx --from bee-sdk bee-mcp`.
 
 ## Wire your client
 
 Pick one config from [`configs/`](./configs):
 
-- [`configs/claude-desktop.json`](./configs/claude-desktop.json) — Claude Desktop
+- [`configs/claude-desktop.json`](./configs/claude-desktop.json) — Claude Desktop (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS)
 - [`configs/cursor.json`](./configs/cursor.json) — Cursor / Windsurf / Zed (project-local mcp config)
-- [`configs/vscode.json`](./configs/vscode.json) — VS Code (Continue, Cline, MCP extension)
+- [`configs/vscode.json`](./configs/vscode.json) — VS Code (Copilot agent mode, Continue, Cline)
+- [`configs/opencode.json`](./configs/opencode.json) — OpenCode (`~/.config/opencode/opencode.json`)
 
-Each file is the literal JSON snippet to drop into the corresponding client's MCP config location.
+Each file is the literal JSON snippet to drop into the corresponding client's MCP config location. Replace `bee_sk_...` with your key.
+
+One-click install for Cursor, and the `code --add-mcp` command for VS Code, live on the docs page: [bee.cuilabs.io/docs/mcp](https://bee.cuilabs.io/docs/mcp).
+
+> **AI agents (Cline, etc.):** see [`../llms-install.md`](../llms-install.md) for a step-by-step machine-readable install guide.
 
 ## Honest fallback
 
-If a domain LoRA adapter isn't present locally, the tool still answers from the base model — without domain specialisation. We don't pretend the adapter is there. The tool's response includes a header noting which adapter served the answer.
+If a domain LoRA adapter isn't promoted for a domain yet, the tool still answers from the base model — without domain specialisation. We don't pretend the adapter is there.
+
+## Advanced: local-model server
+
+Core contributors with access to the private `cuilabs/bee` engine repo can run the local-model variant (`python -m bee.mcp_server`), which loads weights + adapters on their own hardware (GPU/MPS) instead of calling the hosted gateway. It exposes the identical 11 tools. That path requires the private repo and is **not** available to the public — the hosted `bee-mcp` above is the supported public path.
 
 ## Where things live
 
-- **Source:** [github.com/cuilabs/bee/blob/master/bee/mcp_server.py](https://github.com/cuilabs/bee/blob/master/bee/mcp_server.py) (688 LoC, Python)
+- **Server package:** [pypi.org/project/bee-sdk](https://pypi.org/project/bee-sdk/) (`bee_sdk/mcp.py`)
+- **Registry entry:** [`io.github.cuilabs/bee`](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.cuilabs/bee)
 - **Docs:** [bee.cuilabs.io/docs/mcp](https://bee.cuilabs.io/docs/mcp)
 - **Spec:** [modelcontextprotocol.io](https://modelcontextprotocol.io)
 - **Issues with the MCP server:** open an issue on this repo

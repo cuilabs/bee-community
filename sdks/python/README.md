@@ -1,23 +1,13 @@
 # bee-sdk (Python)
 
-Pointer page for the Python SDK. The package source lives in the main Bee repo at [`sdks/python/`](https://github.com/cuilabs/bee/tree/master/sdks/python).
+Pointer page for the Python SDK. The package is published on PyPI as [`bee-sdk`](https://pypi.org/project/bee-sdk/) — Python client + the `bee-mcp` MCP server in one zero-dependency package.
+
+[![PyPI](https://img.shields.io/pypi/v/bee-sdk.svg)](https://pypi.org/project/bee-sdk/)
 
 ## Install
 
-The PyPI `cuilabs` organisation is currently **pending approval**, so `pip install bee-sdk` won't resolve yet. Until it lands, install directly from GitHub:
-
 ```bash
-# Recommended while PyPI org approval is pending
-pip install "git+https://github.com/cuilabs/bee.git#subdirectory=sdks/python"
-
-# With the optional async client (adds httpx)
-pip install "git+https://github.com/cuilabs/bee.git#subdirectory=sdks/python" httpx
-```
-
-Once PyPI approval lands, the canonical install becomes:
-
-```bash
-pip install bee-sdk          # sync, zero runtime deps
+pip install bee-sdk          # sync client + bee-mcp server, zero runtime deps
 pip install bee-sdk[async]   # adds httpx for the async client
 ```
 
@@ -34,8 +24,19 @@ print(bee.chat(
 ))
 ```
 
+## MCP server
+
+The same package ships Bee's hosted MCP server:
+
+```bash
+export BEE_API_KEY=bee_sk_...   # create at bee.cuilabs.io/app/account/api-keys
+bee-mcp                         # stdio — works with Claude Desktop, Cursor, VS Code, …
+```
+
+See [`../../mcp/`](../../mcp) for per-client configs.
+
 ## More
 
 - Marketing-site install + code samples: [bee.cuilabs.io/docs/sdks](https://bee.cuilabs.io/docs/sdks)
 - Working examples: [`examples/python/`](../../examples/python)
-- Source: [github.com/cuilabs/bee/tree/master/sdks/python](https://github.com/cuilabs/bee/tree/master/sdks/python)
+- PyPI: [pypi.org/project/bee-sdk](https://pypi.org/project/bee-sdk/)

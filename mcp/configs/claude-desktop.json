@@ -1,9 +1,9 @@
 {
   "mcpServers": {
     "bee": {
-      "command": "python",
-      "args": ["-m", "bee.mcp_server"],
-      "env": { "BEE_DEVICE": "mps" }
+      "command": "uvx",
+      "args": ["--from", "bee-sdk", "bee-mcp"],
+      "env": { "BEE_API_KEY": "bee_sk_..." }
     }
   }
 }
