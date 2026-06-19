@@ -6,11 +6,11 @@ Thanks for picking up a thread on the public side of Bee. This repo collects exa
 
 | Issue | File it here? |
 |---|---|
-| SDK bug (`@cuilabs/bee` or `bee-sdk`) | ✅ yes — open an issue with a minimal reproduction |
+| SDK bug (`@heossi/bee` or `bee-sdk`) | ✅ yes — open an issue with a minimal reproduction |
 | MCP server bug or missing client config | ✅ yes |
 | New example you'd like to contribute | ✅ yes — open a PR straight away |
-| Bee engine bug, model output issue, billing question | ❌ no — use [bee.cuilabs.io/contact](https://bee.cuilabs.io/contact) |
-| Security disclosure | ❌ not in public — email `bee-security@cuilabs.io` |
+| Bee engine bug, model output issue, billing question | ❌ no — use [bee.heossi.com/contact](https://bee.heossi.com/contact) |
+| Security disclosure | ❌ not in public — email `bee-security@heossi.com` |
 
 ## Pull requests
 
@@ -25,7 +25,7 @@ We mirror the same rule the main Bee repo runs on:
 
 > If a feature is shown in code or claimed in copy, it must actually work. No `TODO` / `FIXME` / `Math.random()` placeholder data, no fake function-calling examples, no "coming soon" labels unless the date is real.
 
-Examples that depend on a feature that's still in flight should be tagged with the relevant [roadmap](https://bee.cuilabs.io/roadmap) stage and a clear status banner at the top of the file.
+Examples that depend on a feature that's still in flight should be tagged with the relevant [roadmap](https://bee.heossi.com/roadmap) stage and a clear status banner at the top of the file.
 
 ## License
 

@@ -2,15 +2,15 @@
  * Minimal Bee SDK quickstart — chat completion with no streaming.
  *
  * Run:
- *   pnpm add @cuilabs/bee
+ *   pnpm add @heossi/bee
  *   BEE_API_KEY=sk-bee-... npx tsx quickstart.ts
  */
 
-import { BeeClient } from "@cuilabs/bee";
+import { BeeClient } from "@heossi/bee";
 
 const apiKey = process.env.BEE_API_KEY;
 if (!apiKey) {
-  console.error("Set BEE_API_KEY first — issue one at https://bee.cuilabs.io/app/account/api-keys");
+  console.error("Set BEE_API_KEY first — issue one at https://bee.heossi.com/app/account/api-keys");
   process.exit(1);
 }
 

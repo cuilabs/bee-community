@@ -4,11 +4,11 @@
  * sending image content to them returns a tier-mismatch error.
  *
  * Run:
- *   pnpm add @cuilabs/bee
+ *   pnpm add @heossi/bee
  *   BEE_API_KEY=sk-bee-... npx tsx vision.ts
  */
 
-import { BeeClient } from "@cuilabs/bee";
+import { BeeClient } from "@heossi/bee";
 
 const bee = new BeeClient({ apiKey: process.env.BEE_API_KEY ?? "" });
 

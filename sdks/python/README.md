@@ -29,7 +29,7 @@ print(bee.chat(
 The same package ships Bee's hosted MCP server:
 
 ```bash
-export BEE_API_KEY=bee_sk_...   # create at bee.cuilabs.io/app/account/api-keys
+export BEE_API_KEY=bee_sk_...   # create at bee.heossi.com/app/account/api-keys
 bee-mcp                         # stdio — works with Claude Desktop, Cursor, VS Code, …
 ```
 
@@ -37,6 +37,6 @@ See [`../../mcp/`](../../mcp) for per-client configs.
 
 ## More
 
-- Marketing-site install + code samples: [bee.cuilabs.io/docs/sdks](https://bee.cuilabs.io/docs/sdks)
+- Marketing-site install + code samples: [bee.heossi.com/docs/sdks](https://bee.heossi.com/docs/sdks)
 - Working examples: [`examples/python/`](../../examples/python)
 - PyPI: [pypi.org/project/bee-sdk](https://pypi.org/project/bee-sdk/)
