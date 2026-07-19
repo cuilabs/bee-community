@@ -1,6 +1,6 @@
 # Bee Community
 
-> Open community repository for **Bee** by [CUI Labs](https://www.cuilabs.io) — public code, developer tooling, documentation, examples, and community-facing components for building with and contributing to Bee.
+> Open community repository for **Bee** by [HEOSSI](https://www.heossi.com) — public code, developer tooling, documentation, examples, and community-facing components for building with and contributing to Bee.
 
 [![npm](https://img.shields.io/npm/v/@cuilabs/bee.svg)](https://www.npmjs.com/package/@cuilabs/bee)
 [![PyPI](https://img.shields.io/pypi/v/bee-sdk.svg)](https://pypi.org/project/bee-sdk/)
