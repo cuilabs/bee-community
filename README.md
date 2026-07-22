@@ -1,4 +1,4 @@
-# Bee Community
+# Bee by HEOSSI — Public Developer Resources
 
 > Open community repository for **Bee** by [HEOSSI](https://www.heossi.com) — public code, developer tooling, documentation, examples, and community-facing components for building with and contributing to Bee.
 
@@ -6,7 +6,7 @@
 [![PyPI](https://img.shields.io/pypi/v/bee-sdk.svg)](https://pypi.org/project/bee-sdk/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 
-<!-- mcp-name: io.github.cuilabs/bee -->
+<!-- mcp-name: io.github.heossihq/bee-public -->
 
 ## What's here
 
@@ -30,19 +30,24 @@ npm install @cuilabs/bee
 pip install bee-sdk
 ```
 
-Full install + quickstart on the marketing site: [bee.cuilabs.io/docs/sdks](https://bee.cuilabs.io/docs/sdks).
+Full install + quickstart: [bee.heossi.com/docs/sdks](https://bee.heossi.com/docs/sdks).
 
 ## MCP Server (Claude Desktop, Cursor, VS Code…)
 
-Bee ships an MCP server that exposes 11 domain-specialised tools (chat, code explanation, security audit, threat modelling, quantum circuits, smart-contract review, paper critique, …) over the Model Context Protocol. Listed on the [official MCP Registry](https://registry.modelcontextprotocol.io) as `io.github.cuilabs/bee`.
+Bee ships a hosted MCP server with 14 governed tools spanning intelligence,
+code, security, research, provenance, usage, documents, memory, and Quantum
+Reasoning Lab. It supports stdio and request/response Streamable HTTP. Hosted
+calls are authenticated, tenant-scoped, plan/policy gated, and metered by the
+Bee gateway.
 
 ```bash
 pip install bee-sdk          # provides the `bee-mcp` console script
-export BEE_API_KEY=bee_sk_…  # create at bee.cuilabs.io/app/account/api-keys
+export BEE_API_KEY=bee_sk_…  # create at bee.heossi.com/app/account/api-keys
 bee-mcp                      # stdio transport — what every desktop client uses
 ```
 
-See [mcp/](./mcp) for per-client configs, or the marketing page at [bee.cuilabs.io/docs/mcp](https://bee.cuilabs.io/docs/mcp).
+See [mcp/](./mcp) for the exact catalog and per-client configs, or
+[bee.heossi.com/docs/mcp](https://bee.heossi.com/docs/mcp).
 
 ## Quickstart
 
@@ -59,20 +64,20 @@ const out = await bee.chat.completions.create({
 console.log(out.choices[0].message.content);
 ```
 
-Get an API key at [bee.cuilabs.io/app/account/api-keys](https://bee.cuilabs.io/app/account/api-keys).
+Get an API key at [bee.heossi.com/app/account/api-keys](https://bee.heossi.com/app/account/api-keys).
 
 ## What this repo is *not*
 
-- **Not the Bee engine source.** The proprietary engine lives in a private CUI Labs repo. This community repo holds only what's safe to publish: SDKs, MCP install material, examples, and docs.
+- **Not the Bee engine source.** The proprietary engine lives in HEOSSI's private monorepo. This repository contains public SDK pointers, MCP install material, examples, and documentation.
 - **Not a release vehicle.** SDKs are released to npm + PyPI. This repo mirrors the source tree of the published packages and links out.
-- **Not in-scope for support tickets.** Use [bee.cuilabs.io/contact](https://bee.cuilabs.io/contact) for product support; use this repo's issues only for SDK / MCP / example bugs.
+- **Not in scope for product support tickets.** Use [bee.heossi.com/contact](https://bee.heossi.com/contact) for product support; use this repo's issues for SDK, MCP, and example bugs.
 
 ## Status
 
-- 🟢 [bee.cuilabs.io/status](https://bee.cuilabs.io/status) — live engine status
-- 📍 [bee.cuilabs.io/roadmap](https://bee.cuilabs.io/roadmap) — what's next
-- 📰 [bee.cuilabs.io/changelog](https://bee.cuilabs.io/changelog) — what shipped
+- 🟢 [bee.heossi.com/status](https://bee.heossi.com/status) — live service status
+- 📍 [bee.heossi.com/roadmap](https://bee.heossi.com/roadmap) — what's next
+- 📰 [bee.heossi.com/changelog](https://bee.heossi.com/changelog) — what shipped
 
 ## License
 
-[Apache-2.0](./LICENSE) — © CUI Labs Pte. Ltd.
+[Apache-2.0](./LICENSE) — © 2026 HEOSSI (Pte.) Ltd.

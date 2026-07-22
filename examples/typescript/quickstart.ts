@@ -10,7 +10,7 @@ import { BeeClient } from "@cuilabs/bee";
 
 const apiKey = process.env.BEE_API_KEY;
 if (!apiKey) {
-  console.error("Set BEE_API_KEY first — issue one at https://bee.cuilabs.io/app/account/api-keys");
+  console.error("Set BEE_API_KEY first — issue one at https://bee.heossi.com/app/account/api-keys");
   process.exit(1);
 }
 

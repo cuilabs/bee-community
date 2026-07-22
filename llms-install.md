@@ -6,10 +6,10 @@ verifiable; do not skip the verification commands.
 
 ## What you are installing
 
-`bee-mcp` — a stdio MCP server exposing 11 domain-specialised LLM tools
-(code explain/fix/refactor/tests, security audit, threat model, pentest assist,
-quantum circuits, smart-contract review, paper critique). It is a thin client:
-tool calls are forwarded to the hosted Bee gateway (`https://bee.cuilabs.io/bee`),
+`bee-mcp` — an MCP server exposing 14 governed intelligence, code, security,
+research, provenance, usage, document, memory, and Quantum Reasoning Lab tools.
+It is a thin client: tool calls are forwarded to the hosted Bee gateway
+(`https://bee.heossi.com/bee`),
 so it needs no GPU and no model download. It ships inside the `bee-sdk` PyPI
 package with zero extra dependencies.
 
@@ -17,7 +17,7 @@ package with zero extra dependencies.
 
 - Python 3.10+ (`python3 --version`)
 - A Bee API key (`bee_sk_...`). If the user does not have one, direct them to
-  create it at https://bee.cuilabs.io/app/account/api-keys — the free Cell tier
+  create it at https://bee.heossi.com/app/account/api-keys — the free Cell tier
   works. Do NOT proceed without a key; tool calls return 401 without it.
 
 ## Step 1 — Install
@@ -63,11 +63,9 @@ pip install).
 
 After the client restarts/reloads MCP servers, confirm:
 
-1. The server "bee" connects and lists **11 tools** (bee_chat, bee_explain_code,
-   bee_fix_code, bee_refactor, bee_write_tests, bee_security_audit,
-   bee_threat_model, bee_pentest_assist, bee_quantum_circuit,
-   bee_smart_contract_review, bee_paper_critique) and **2 resources**
-   (`bee://status`, `bee://domains`).
+1. The server "bee" connects and lists **14 tools**. The exact names are in
+   [`mcp/README.md`](./mcp/README.md). It also lists **4 resources**:
+   `bee://status`, `bee://domains`, `bee://documents`, and `bee://memory`.
 2. Call `bee_chat` with `{"message": "Say OK.", "max_tokens": 16}`. A non-empty
    text response proves the gateway path works. The first call may take up to
    ~2 minutes if the serverless backend is cold — this is normal; do not retry
@@ -77,13 +75,13 @@ After the client restarts/reloads MCP servers, confirm:
 
 | Symptom | Fix |
 |---|---|
-| Tool calls return "Bee API error (401)" | `BEE_API_KEY` missing/invalid — create one at https://bee.cuilabs.io/app/account/api-keys |
+| Tool calls return "Bee API error (401)" | `BEE_API_KEY` missing/invalid — create one at https://bee.heossi.com/app/account/api-keys |
 | `bee-mcp: command not found` | Use `python3 -m bee_sdk.mcp`, or ensure pip's bin dir is on PATH |
 | First tool call is slow (~1–2 min) | Serverless cold start — expected, subsequent calls are fast |
-| Server exits with "HTTP MCP transport is not implemented" | Remove `--http` — only stdio is supported |
+| Remote HTTP does not bind publicly | It binds to localhost by default; set `BEE_MCP_HTTP_HOST=0.0.0.0` only behind a trusted authenticated proxy |
 
 ## Links
 
-- Docs: https://bee.cuilabs.io/docs/mcp
+- Docs: https://bee.heossi.com/docs/mcp
 - Package: https://pypi.org/project/bee-sdk/
-- Registry: `io.github.cuilabs/bee` on https://registry.modelcontextprotocol.io
+- Registry metadata name: `io.github.heossihq/bee-public`

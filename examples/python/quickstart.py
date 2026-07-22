@@ -14,7 +14,7 @@ api_key = os.environ.get("BEE_API_KEY")
 if not api_key:
     print(
         "Set BEE_API_KEY first — issue one at "
-        "https://bee.cuilabs.io/app/account/api-keys",
+        "https://bee.heossi.com/app/account/api-keys",
         file=sys.stderr,
     )
     sys.exit(1)
