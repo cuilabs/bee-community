@@ -9,7 +9,7 @@ verifiable; do not skip the verification commands.
 `bee-mcp` — an MCP server exposing 14 governed intelligence, code, security,
 research, provenance, usage, document, memory, and Quantum Reasoning Lab tools.
 It is a thin client: tool calls are forwarded to the hosted Bee gateway
-(`https://bee.heossi.com/bee`),
+(`https://api.bee.heossi.com/bee`),
 so it needs no GPU and no model download. It ships inside the `bee-sdk` PyPI
 package with zero extra dependencies.
 
@@ -17,7 +17,7 @@ package with zero extra dependencies.
 
 - Python 3.10+ (`python3 --version`)
 - A Bee API key (`bee_sk_...`). If the user does not have one, direct them to
-  create it at https://bee.heossi.com/app/account/api-keys — the free Cell tier
+  create it at https://workspace.bee.heossi.com/account/api-keys — the free Cell tier
   works. Do NOT proceed without a key; tool calls return 401 without it.
 
 ## Step 1 — Install
@@ -75,7 +75,7 @@ After the client restarts/reloads MCP servers, confirm:
 
 | Symptom | Fix |
 |---|---|
-| Tool calls return "Bee API error (401)" | `BEE_API_KEY` missing/invalid — create one at https://bee.heossi.com/app/account/api-keys |
+| Tool calls return "Bee API error (401)" | `BEE_API_KEY` missing/invalid — create one at https://workspace.bee.heossi.com/account/api-keys |
 | `bee-mcp: command not found` | Use `python3 -m bee_sdk.mcp`, or ensure pip's bin dir is on PATH |
 | First tool call is slow (~1–2 min) | Serverless cold start — expected, subsequent calls are fast |
 | Remote HTTP does not bind publicly | It binds to localhost by default; set `BEE_MCP_HTTP_HOST=0.0.0.0` only behind a trusted authenticated proxy |

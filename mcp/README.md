@@ -46,7 +46,7 @@ one tenant document.
 
 ```bash
 pip install bee-sdk
-export BEE_API_KEY=bee_sk_...  # create at https://bee.heossi.com/app/account/api-keys
+export BEE_API_KEY=bee_sk_...  # create at https://workspace.bee.heossi.com/account/api-keys
 bee-mcp --help
 ```
 

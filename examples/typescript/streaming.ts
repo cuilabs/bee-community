@@ -2,11 +2,11 @@
  * Streaming Bee chat completion via async iterator.
  *
  * Run:
- *   pnpm add @cuilabs/bee
+ *   pnpm add @heossi/bee
  *   BEE_API_KEY=sk-bee-... npx tsx streaming.ts
  */
 
-import { BeeClient } from "@cuilabs/bee";
+import { BeeClient } from "@heossi/bee";
 
 const bee = new BeeClient({ apiKey: process.env.BEE_API_KEY ?? "" });
 

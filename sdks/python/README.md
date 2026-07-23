@@ -29,7 +29,7 @@ print(bee.chat(
 The same package ships Bee's hosted MCP server:
 
 ```bash
-export BEE_API_KEY=bee_sk_...   # create at bee.heossi.com/app/account/api-keys
+export BEE_API_KEY=bee_sk_...   # create at workspace.bee.heossi.com/account/api-keys
 bee-mcp                         # stdio — works with Claude Desktop, Cursor, VS Code, …
 ```
 
