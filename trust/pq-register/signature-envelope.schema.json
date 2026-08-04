@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bee.heossi.com/trust/schemas/pq-coverage-signature-envelope/1.0.0",
+  "title": "Post-Quantum Coverage Register — Detached Signature Envelope",
+  "description": "The detached signature over a register version. Published alongside the register as <register-basename>.v<version>.sig.json — the signature cannot live inside the register file because the canonical hash is computed over that file's entire contents. Verification procedure: (1) validate the register and compute its canonical hash with the published validator; (2) check register_hash here equals that hash and register_version matches; (3) verify `signature` over the ASCII bytes of register_hash using the ML-DSA public key obtained per the register's meta.signing.public_key_publication, with standard FIPS 204 tooling (e.g., liboqs, @noble/post-quantum); (4) check the key fingerprint against at least two independent pinning surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["envelope_version", "register_version", "register_hash", "algorithm", "signer", "key_id", "public_key_fingerprint", "signature", "signed_at"],
+  "properties": {
+    "envelope_version": { "type": "string", "const": "1.0.0" },
+    "register_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "register_hash": { "type": "string", "pattern": "^sha384:[0-9a-f]{96}$", "description": "The canonical hash of the register version this envelope signs; the signing preimage is the ASCII byte string of this value." },
+    "algorithm": { "type": "string", "enum": ["ML-DSA-65", "ML-DSA-87"] },
+    "signer": { "type": "string", "enum": ["offline-root", "online-downgrade"], "description": "offline-root: full-authority version signature. online-downgrade: valid only for versions whose diff against the predecessor is limited to status downgrades and probe notes; verifiers enforcing custody semantics must reject an online-downgrade envelope over any other change." },
+    "key_id": { "type": "string", "minLength": 1, "description": "Stable identifier of the signing key (e.g., heossi-register-root-2026 or heossi-register-downgrade-2026)." },
+    "public_key_fingerprint": { "type": "string", "pattern": "^sha384:[0-9a-f]{96}$", "description": "SHA-384 over the public-key bytes exactly as published at the pinning surfaces, for cross-checking against them. Pinning is over the published artifact, independent of ASN.1 or other encodings." },
+    "public_key": { "type": "string", "contentEncoding": "base64", "description": "Optional inline copy of the public-key bytes for convenience; verifiers must still check the fingerprint against the pinning surfaces rather than trusting the inline copy." },
+    "signature": { "type": "string", "contentEncoding": "base64", "description": "ML-DSA signature over the ASCII bytes of register_hash." },
+    "signed_at": { "type": "string", "format": "date-time" },
+    "predecessor_envelope_hash": { "type": ["string", "null"], "pattern": "^sha384:[0-9a-f]{96}$", "description": "SHA-384 of the previous version's envelope file, forming the signature chain in parallel with the register's hash chain; null for the first signed version." }
+  }
+}

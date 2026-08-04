@@ -1,0 +1,21 @@
+{
+  // A second emit for CommonJS consumers. The package is authored as ESM and
+  // that stays the default; this exists so `require("@heossihq/bee")` works
+  // instead of failing with ERR_PACKAGE_PATH_NOT_EXPORTED, which is what a
+  // clean-room install of 0.1.5 found.
+  //
+  // "module": "CommonJS" forces classic resolution, which TypeScript 6 marks
+  // deprecated ahead of removing it in 7. Acknowledged explicitly rather than
+  // silenced by accident; when TS 7 lands this build moves to a bundler emit.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "ignoreDeprecations": "6.0",
+    "outDir": "./dist/cjs",
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

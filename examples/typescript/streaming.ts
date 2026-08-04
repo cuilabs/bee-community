@@ -1,15 +1,6 @@
-/**
- * Streaming Bee chat completion via async iterator.
- *
- * Run:
- *   pnpm add @heossi/bee
- *   BEE_API_KEY=sk-bee-... npx tsx streaming.ts
- */
+import { BeeClient } from "@heossihq/bee";
 
-import { BeeClient } from "@heossi/bee";
-
-const bee = new BeeClient({ apiKey: process.env.BEE_API_KEY ?? "" });
-
+const bee = new BeeClient({ apiKey: process.env.BEE_API_KEY! });
 const stream = await bee.chat.completions.create({
   model: "bee-cell",
   messages: [{ role: "user", content: "Write a short haiku about bees." }],
@@ -17,7 +8,7 @@ const stream = await bee.chat.completions.create({
 });
 
 for await (const chunk of stream) {
-  const piece = chunk.choices[0]?.delta?.content;
-  if (piece) process.stdout.write(piece);
+  const content = chunk.choices[0]?.delta?.content;
+  if (content) process.stdout.write(content);
 }
 process.stdout.write("\n");

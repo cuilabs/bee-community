@@ -1,0 +1,1372 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Bee by HEOSSI - Developer API",
+    "version": "2026-08-04",
+    "description": "OpenAI-compatible developer API for Bee by HEOSSI. API keys are created in Bee Workspace and sent as Bearer credentials."
+  },
+  "servers": [
+    {
+      "url": "https://api.bee.heossi.com"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/bee/models": {
+      "get": {
+        "operationId": "listModels",
+        "summary": "List Bee model aliases and immutable snapshots",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Model list"
+          }
+        }
+      }
+    },
+    "/bee/openrouter/models": {
+      "get": {
+        "operationId": "listOpenRouterProviderModels",
+        "summary": "List Bee models staged for OpenRouter provider integration",
+        "description": "Provider-facing catalog with per-token prices, modalities, features, capacity, datacenters, and explicit staged/ready launch state.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OpenRouter provider model catalog"
+          }
+        }
+      }
+    },
+    "/bee/chat/completions": {
+      "post": {
+        "operationId": "createChatCompletion",
+        "summary": "Create an OpenAI-compatible chat completion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "messages"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "example": "bee-cell"
+                  },
+                  "messages": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant",
+                            "tool"
+                          ]
+                        },
+                        "content": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "stream": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "max_tokens": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "temperature": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 2
+                  },
+                  "reasoning_effort": {
+                    "type": "string",
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      "xhigh",
+                      "max",
+                      "ultracode"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completion or server-sent event stream.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatCompletionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API credential"
+          },
+          "402": {
+            "description": "Insufficient funded usage credit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BeeActionRequiredError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The requested model or capability is not included",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BeeActionRequiredError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Allowance or rate limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BeeActionRequiredError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bee/code/v1/turns": {
+      "post": {
+        "operationId": "runBeeCodeTurn",
+        "summary": "Run a Bee Code software-development turn",
+        "description": "Versioned, structured NDJSON agent protocol for local IDE, CLI, and API clients. Tool calls, file deltas, approvals, progress, completion, and failure are machine events rather than assistant prose.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "protocol",
+                  "session_id",
+                  "turn_id",
+                  "model",
+                  "mode",
+                  "request",
+                  "workspace",
+                  "transcript",
+                  "capabilities"
+                ],
+                "properties": {
+                  "protocol": {
+                    "type": "string",
+                    "const": "bee.code.v1"
+                  },
+                  "session_id": {
+                    "type": "string"
+                  },
+                  "turn_id": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "manual",
+                      "plan",
+                      "edit",
+                      "auto"
+                    ]
+                  },
+                  "effort": {
+                    "type": "string",
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      "xhigh",
+                      "max",
+                      "ultracode"
+                    ],
+                    "description": "Optional product effort level; omitted keeps the plane's default output budget."
+                  },
+                  "enable_thinking": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable the selected model's explicit thinking mode. Requests are rejected when the model does not support it."
+                  },
+                  "request": {
+                    "type": "string"
+                  },
+                  "workspace": {
+                    "type": "object"
+                  },
+                  "transcript": {
+                    "type": "array"
+                  },
+                  "capabilities": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ordered Bee Code event stream.",
+            "content": {
+              "application/x-ndjson": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Bee Code protocol request"
+          },
+          "401": {
+            "description": "Missing or invalid API credential"
+          },
+          "429": {
+            "description": "Allowance or rate limit reached"
+          }
+        }
+      }
+    },
+    "/bee/code/v1/search": {
+      "post": {
+        "operationId": "runBeeCodeWebSearch",
+        "summary": "Execute the Bee Code web_search tool",
+        "description": "Registry-driven live web search for the bee.code.v1 agent plane. The client executes the model's web_search tool call by POSTing here with its turn credential.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "query"
+                ],
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "default": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Provider used and titled results with URLs and snippets"
+          },
+          "400": {
+            "description": "Missing or invalid query"
+          },
+          "401": {
+            "description": "Missing or invalid API credential"
+          },
+          "502": {
+            "description": "Every configured search provider failed"
+          },
+          "503": {
+            "description": "No search provider configured on this deployment"
+          }
+        }
+      }
+    },
+    "/bee/code/v1/transcribe": {
+      "post": {
+        "operationId": "transcribeBeeCodeAudio",
+        "summary": "Transcribe Bee Code mic audio to text",
+        "description": "Multipart audio upload transcribed over the governed ASR provider chain; powers the editor composer's dictation input.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transcribed text with provider and model"
+          },
+          "400": {
+            "description": "Invalid, oversize, or unsupported audio"
+          },
+          "401": {
+            "description": "Missing or invalid API credential"
+          },
+          "503": {
+            "description": "No ASR provider configured on this deployment"
+          }
+        }
+      }
+    },
+    "/bee/feedback": {
+      "post": {
+        "operationId": "submitFeedback",
+        "summary": "Submit authenticated feedback for a Bee interaction",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Feedback accepted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/bee/documents": {
+      "get": {
+        "operationId": "listDocuments",
+        "summary": "List the caller's tenant-scoped documents",
+        "responses": {
+          "200": {
+            "description": "Document list"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "RAG is not enabled for this plan"
+          }
+        }
+      }
+    },
+    "/bee/documents/upload": {
+      "post": {
+        "operationId": "uploadDocument",
+        "summary": "Add a tenant-scoped text document for retrieval",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentUpload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Document accepted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Document allowance reached"
+          }
+        }
+      }
+    },
+    "/bee/documents/retrieve": {
+      "post": {
+        "operationId": "retrieveDocuments",
+        "summary": "Retrieve relevant chunks from the caller's documents",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetrievalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Relevant chunks"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/bee/memories": {
+      "get": {
+        "operationId": "listMemories",
+        "summary": "List the caller's personal memory records",
+        "responses": {
+          "200": {
+            "description": "Memory records"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createMemory",
+        "summary": "Create a personal memory record",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Memory created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/bee/memories/search": {
+      "post": {
+        "operationId": "searchMemories",
+        "summary": "Search the caller's personal memory",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetrievalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Matching memories"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/bee/quantum-reasoning/jobs": {
+      "get": {
+        "operationId": "listQuantumReasoningJobs",
+        "summary": "List tenant-scoped Quantum Reasoning Lab jobs and capabilities",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "queued",
+                "generating_candidates",
+                "scoring",
+                "selecting",
+                "awaiting_qpu",
+                "completed",
+                "classical_fallback",
+                "failed",
+                "cancelled"
+              ]
+            }
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "bee-hive",
+                "bee-swarm"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job summaries, pagination cursor, and current model/QPU capabilities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuantumReasoningJobPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createQuantumReasoningJob",
+        "summary": "Create a durable Quantum Reasoning Lab job",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 160
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuantumReasoningJobCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Existing job returned for the same idempotency key and request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuantumReasoningJobEnvelope"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Job queued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuantumReasoningJobEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Model or real-QPU entitlement denied"
+          },
+          "409": {
+            "description": "Idempotency key was reused with different input"
+          },
+          "429": {
+            "description": "Per-tenant queue limit reached"
+          },
+          "503": {
+            "description": "Quantum Reasoning Lab is disabled"
+          }
+        }
+      }
+    },
+    "/bee/quantum-reasoning/jobs/{jobId}": {
+      "parameters": [
+        {
+          "name": "jobId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "getQuantumReasoningJob",
+        "summary": "Get candidates, selection evidence, result, usage, and receipt for one job",
+        "responses": {
+          "200": {
+            "description": "Decrypted tenant-scoped job detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuantumReasoningJobEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Job not found in the authenticated tenant"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removeQuantumReasoningJob",
+        "summary": "Cancel a queued job or erase terminal-job content while retaining audit metadata",
+        "responses": {
+          "200": {
+            "description": "Cancelled or deleted"
+          },
+          "409": {
+            "description": "Execution started and cancellation is no longer safe"
+          }
+        }
+      }
+    },
+    "/mcp": {
+      "post": {
+        "operationId": "mcpJsonRpc",
+        "summary": "Use the hosted Streamable HTTP MCP server",
+        "description": "JSON-RPC MCP transport. OAuth protected resource metadata is available at /oauth/protected-resource.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "jsonrpc",
+                  "method"
+                ],
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "MCP JSON-RPC response"
+          },
+          "401": {
+            "description": "OAuth or Bee API key required"
+          }
+        }
+      }
+    },
+    "/oauth/protected-resource": {
+      "get": {
+        "operationId": "getMcpProtectedResourceMetadata",
+        "summary": "Get MCP OAuth protected-resource metadata",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "RFC 9728 metadata"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "bee_sk_live_..."
+      }
+    },
+    "schemas": {
+      "ChatCompletionResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string",
+            "enum": [
+              "chat.completion"
+            ]
+          },
+          "created": {
+            "type": "integer"
+          },
+          "model": {
+            "type": "string"
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "usage": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      },
+      "BeeUpgradeAction": {
+        "type": "object",
+        "required": [
+          "kind",
+          "label",
+          "available",
+          "url"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "upgrade_plan",
+              "enable_usage_credits",
+              "add_credits",
+              "manage_spend_cap",
+              "purchase_addon",
+              "compact_context",
+              "new_conversation",
+              "retry_later",
+              "contact_sales"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "url": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plan_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BeeBindingLimit": {
+        "type": "object",
+        "required": [
+          "kind",
+          "unit"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "tokens",
+              "requests",
+              "seconds",
+              "credits",
+              "context",
+              "rate",
+              "documents",
+              "storage"
+            ]
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "tokens",
+              "requests",
+              "seconds",
+              "cents",
+              "percent",
+              "documents",
+              "bytes",
+              "characters"
+            ]
+          },
+          "used": {
+            "type": "number",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "number",
+            "minimum": 0
+          },
+          "remaining": {
+            "type": "number",
+            "minimum": 0
+          },
+          "resets_at": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "retry_after_seconds": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "BeeUpgradeDecision": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "reason",
+          "current_plan",
+          "required_plan",
+          "actions"
+        ],
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "2026-07-31"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "model_access_required",
+              "domain_tier_required",
+              "feature_required",
+              "token_allowance_exhausted",
+              "tier_allowance_exhausted",
+              "insufficient_credits",
+              "overage_cap_reached",
+              "context_limit_reached",
+              "rate_limited"
+            ]
+          },
+          "current_plan": {
+            "type": "string"
+          },
+          "required_plan": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "requested_model": {
+            "type": "string"
+          },
+          "requested_domain": {
+            "type": "string"
+          },
+          "requested_feature": {
+            "type": "string"
+          },
+          "binding_limit": {
+            "$ref": "#/components/schemas/BeeBindingLimit"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BeeUpgradeAction"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "BeeActionRequiredError": {
+        "type": "object",
+        "required": [
+          "error",
+          "bee_upgrade"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "bee_upgrade": {
+            "$ref": "#/components/schemas/BeeUpgradeDecision"
+          }
+        },
+        "additionalProperties": true
+      },
+      "DocumentUpload": {
+        "type": "object",
+        "required": [
+          "source",
+          "content"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "RetrievalRequest": {
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "k": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 3
+          }
+        }
+      },
+      "QuantumReasoningJobCreate": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "model",
+          "product"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64000
+          },
+          "model": {
+            "type": "string",
+            "enum": [
+              "bee-hive",
+              "bee-swarm"
+            ]
+          },
+          "product": {
+            "type": "string",
+            "enum": [
+              "simulation_cloud",
+              "managed_qpu",
+              "byopa_managed"
+            ]
+          },
+          "provider_connection_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "workspace_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuantumReasoningJob": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "model",
+          "scoring_method",
+          "requested_real",
+          "used_real_qubits",
+          "real_request_status",
+          "usage",
+          "attempt_count",
+          "max_attempts",
+          "outcome_state",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "generating_candidates",
+              "scoring",
+              "selecting",
+              "awaiting_qpu",
+              "completed",
+              "classical_fallback",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "model": {
+            "type": "string",
+            "enum": [
+              "bee-hive",
+              "bee-swarm"
+            ]
+          },
+          "scoring_method": {
+            "type": "string",
+            "enum": [
+              "hive_logprob",
+              "swarm_judge"
+            ]
+          },
+          "requested_real": {
+            "type": "boolean"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "selected_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "result": {
+            "type": "string"
+          },
+          "selector_backend": {
+            "type": "string"
+          },
+          "selector_confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "used_real_qubits": {
+            "type": "boolean"
+          },
+          "quoted_credits": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "fallback_reason": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "selector_unreachable",
+                  "invalid_selection"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "real_request_status": {
+            "type": "string",
+            "enum": [
+              "not_requested",
+              "reserved",
+              "executed",
+              "provider_used_simulator",
+              "quantum_not_enabled",
+              "quantum_allowance_exhausted",
+              "released_after_failure"
+            ]
+          },
+          "usage": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "inference_receipt_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "attempt_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max_attempts": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "next_attempt_at": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outcome_state": {
+            "type": "string",
+            "enum": [
+              "not_started",
+              "in_progress",
+              "committed",
+              "outcome_unknown",
+              "reconciled"
+            ]
+          },
+          "error": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": [
+                  "code",
+                  "message"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "workspace_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completed_at": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuantumReasoningJobEnvelope": {
+        "type": "object",
+        "required": [
+          "job"
+        ],
+        "properties": {
+          "job": {
+            "$ref": "#/components/schemas/QuantumReasoningJob"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuantumReasoningCapabilities": {
+        "type": "object",
+        "required": [
+          "allowed_models",
+          "real_enabled",
+          "allowance_credits",
+          "used_credits",
+          "remaining_credits",
+          "workspace_role",
+          "can_run_real",
+          "can_manage_jobs"
+        ],
+        "properties": {
+          "allowed_models": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "bee-hive",
+                "bee-swarm"
+              ]
+            }
+          },
+          "real_enabled": {
+            "type": "boolean"
+          },
+          "allowance_credits": {
+            "type": "number"
+          },
+          "used_credits": {
+            "type": "number"
+          },
+          "remaining_credits": {
+            "type": "number"
+          },
+          "workspace_role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "member"
+            ]
+          },
+          "can_run_real": {
+            "type": "boolean"
+          },
+          "can_manage_jobs": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuantumReasoningJobPage": {
+        "type": "object",
+        "required": [
+          "jobs",
+          "next_cursor",
+          "capabilities"
+        ],
+        "properties": {
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuantumReasoningJob"
+            }
+          },
+          "next_cursor": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/QuantumReasoningCapabilities"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "manifest_version": "0.4",
+  "name": "bee",
+  "display_name": "Bee by HEOSSI",
+  "version": "0.6.9",
+  "description": "Bee by HEOSSI: 14 governed intelligence, trust, account, document, memory, and Quantum Reasoning Lab tools over the hosted Bee gateway. Model access follows your plan; Bee Cell is free.",
+  "long_description": "Bee by HEOSSI - The Progressive Quantum-Native Intelligence Engine - is a governed multimodal intelligence platform (https://bee.heossi.com). This extension runs the hosted `bee-mcp` server: every tool call is forwarded to the Bee gateway over your API key - no GPU or model download. Your API key's plan decides which Bee tiers you can use; set a default tier below or pass `model` on bee_chat. Create a free API key in Bee Workspace. First use after idle may include serverless startup time. Tools call the hosted gateway; chat/search tools are read-only and document/memory writes remain scoped to your Bee account.",
+  "author": {
+    "name": "HEOSSI (Pte.) Ltd.",
+    "email": "bee-support@heossi.com",
+    "url": "https://bee.heossi.com"
+  },
+  "homepage": "https://bee.heossi.com",
+  "documentation": "https://bee.heossi.com/docs/mcp",
+  "support": "https://github.com/heossihq/bee-public/issues",
+  "icon": "icon.png",
+  "server": {
+    "type": "uv",
+    "entry_point": "src/server.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${__dirname}",
+        "src/server.py"
+      ],
+      "env": {
+        "BEE_API_KEY": "${user_config.api_key}",
+        "BEE_MODEL": "${user_config.model}"
+      }
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "Bee API key",
+      "description": "Your bee_sk_… key. Create one at https://bee.heossi.com/app/account/api-keys - the free Cell tier works.",
+      "sensitive": true,
+      "required": true
+    },
+    "model": {
+      "type": "string",
+      "title": "Default model tier",
+      "description": "bee-cell (free), bee-brood, bee-comb, bee-buzz, bee-hive, or bee-swarm. Tier access follows your plan; bee_chat can also pick a tier per call.",
+      "default": "bee-cell",
+      "required": false
+    }
+  },
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
+    "runtimes": {
+      "python": ">=3.10"
+    }
+  },
+  "keywords": [
+    "llm",
+    "ai",
+    "security",
+    "quantum",
+    "code",
+    "openai-compatible",
+    "heossi",
+    "tiered"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heossihq/bee-public"
+  }
+}

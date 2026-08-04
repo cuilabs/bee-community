@@ -1,83 +1,72 @@
-# Bee by HEOSSI — Public Developer Resources
+<p align="center"><img src="./assets/bee-logo-400.png" alt="Bee by HEOSSI" width="120"></p>
 
-> Open community repository for **Bee** by [HEOSSI](https://www.heossi.com) — public code, developer tooling, documentation, examples, and community-facing components for building with and contributing to Bee.
+# Bee by HEOSSI
 
-[![npm](https://img.shields.io/npm/v/@heossi/bee.svg)](https://www.npmjs.com/package/@heossi/bee)
-[![PyPI](https://img.shields.io/pypi/v/bee-sdk.svg)](https://pypi.org/project/bee-sdk/)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
+[![npm](https://img.shields.io/npm/v/%40heossihq%2Fbee?label=npm)](https://www.npmjs.com/package/@heossihq/bee)
+[![PyPI](https://img.shields.io/pypi/v/bee-sdk?label=PyPI)](https://pypi.org/project/bee-sdk/)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.heossihq%2Fbee--public-6f42c1)](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.heossihq/bee-public)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](./LICENSE)
+
+The public developer distribution for [Bee](https://bee.heossi.com), HEOSSI's governed multimodal intelligence platform. This repository contains the actual source of Bee's Apache-2.0 SDKs, MCP integration, API contracts, runnable examples, and public trust-verification material.
+
+> This repository is generated from reviewed, public-safe paths in the Bee monorepo. [MANIFEST.json](./MANIFEST.json) records the exact source commit and content digest for every export.
 
 <!-- mcp-name: io.github.heossihq/bee-public -->
 
-## What's here
+## Developer surface
 
-| Path | What |
-|---|---|
-| [`mcp/`](./mcp) | Bee MCP Server install instructions for Claude Desktop, Cursor, VS Code, Zed, Windsurf, OpenCode |
-| [`llms-install.md`](./llms-install.md) | AI-agent-readable MCP install guide (Cline & friends) |
-| [`sdks/typescript/`](./sdks/typescript) | Pointer + quickstart for `@heossi/bee` (live on npm) |
-| [`sdks/python/`](./sdks/python) | Pointer + quickstart for `bee-sdk` (live on PyPI) |
-| [`examples/typescript/`](./examples/typescript) | Working `@heossi/bee` SDK examples (quickstart, streaming, vision) |
-| [`examples/python/`](./examples/python) | Working `bee-sdk` examples |
-| [`CONTRIBUTING.md`](./CONTRIBUTING.md) | How to file an issue, propose a change, or run a workshop on Bee |
-
-## SDKs
-
-```bash
-# TypeScript / JavaScript / Node / Deno / Bun / browsers — live on npm
-npm install @heossi/bee
-
-# Python (3.10+) — live on PyPI; also ships the `bee-mcp` MCP server
-pip install bee-sdk
-```
-
-Full install + quickstart: [bee.heossi.com/docs/sdks](https://bee.heossi.com/docs/sdks).
-
-## MCP Server (Claude Desktop, Cursor, VS Code…)
-
-Bee ships a hosted MCP server with 14 governed tools spanning intelligence,
-code, security, research, provenance, usage, documents, memory, and Quantum
-Reasoning Lab. It supports stdio and request/response Streamable HTTP. Hosted
-calls are authenticated, tenant-scoped, plan/policy gated, and metered by the
-Bee gateway.
-
-```bash
-pip install bee-sdk          # provides the `bee-mcp` console script
-export BEE_API_KEY=bee_sk_…  # create at workspace.bee.heossi.com/account/api-keys
-bee-mcp                      # stdio transport — what every desktop client uses
-```
-
-See [mcp/](./mcp) for the exact catalog and per-client configs, or
-[bee.heossi.com/docs/mcp](https://bee.heossi.com/docs/mcp).
+| Surface | Install or entry point | Source / contract |
+| --- | --- | --- |
+| TypeScript SDK | `npm install @heossihq/bee` | [`sdks/typescript`](./sdks/typescript) |
+| Python SDK | `pip install bee-sdk` | [`sdks/python`](./sdks/python) |
+| MCP server | `uvx --from bee-sdk@latest bee-mcp` | [`mcp`](./mcp) · [`server.json`](./sdks/python/server.json) |
+| OpenAI-compatible API | `https://api.bee.heossi.com/bee` | [`openapi.json`](./api/openapi.json) · [`postman.json`](./api/postman.json) |
+| VS Code extension | Open VSX: `Heossi.beecode` | [Install](https://open-vsx.org/extension/Heossi/beecode) |
+| Bee Code CLI | `npm install -g @heossihq/beecode` | [Download guide](https://bee.heossi.com/download) |
+| PQ assurance | Signed public coverage register | [`trust/pq-register`](./trust/pq-register) |
 
 ## Quickstart
 
 ```ts
-import { BeeClient } from "@heossi/bee";
+import { BeeClient } from "@heossihq/bee";
 
 const bee = new BeeClient({ apiKey: process.env.BEE_API_KEY! });
-
-const out = await bee.chat.completions.create({
+const result = await bee.chat.completions.create({
   model: "bee-cell",
-  messages: [{ role: "user", content: "What is Bee?" }],
+  messages: [{ role: "user", content: "Explain hybrid post-quantum TLS." }],
 });
 
-console.log(out.choices[0].message.content);
+console.log(result.choices[0].message.content);
 ```
 
-Get an API key at [workspace.bee.heossi.com/account/api-keys](https://workspace.bee.heossi.com/account/api-keys).
+Create an API key in [Bee Workspace](https://workspace.bee.heossi.com/account/api-keys). The free Cell tier works with both SDKs and MCP.
 
-## What this repo is *not*
+## Repository map
 
-- **Not the Bee engine source.** The proprietary engine lives in HEOSSI's private monorepo. This repository contains public SDK pointers, MCP install material, examples, and documentation.
-- **Not a release vehicle.** SDKs are released to npm + PyPI. This repo mirrors the source tree of the published packages and links out.
-- **Not in scope for product support tickets.** Use [bee.heossi.com/contact](https://bee.heossi.com/contact) for product support; use this repo's issues for SDK, MCP, and example bugs.
+```text
+api/                 Versioned OpenAPI and Postman contracts
+examples/            Runnable TypeScript and Python examples
+mcp/                 Client configuration and MCP setup
+sdks/typescript/     Published @heossihq/bee package source and tests
+sdks/python/         Published bee-sdk and bee-mcp source and tests
+trust/pq-register/   Public PQ coverage register and offline verification tools
+```
 
-## Status
+## Public and proprietary boundary
 
-- 🟢 [bee.heossi.com/status](https://bee.heossi.com/status) — live service status
-- 📍 [bee.heossi.com/roadmap](https://bee.heossi.com/roadmap) — what's next
-- 📰 [bee.heossi.com/changelog](https://bee.heossi.com/changelog) — what shipped
+The files in this repository are Apache-2.0 licensed. Bee's model engine, orchestration plane, hosted gateway, Bee Code CLI implementation, editor-extension implementation, and commercial applications remain proprietary and are not represented as open source here. Public API and package behavior is defined by the contracts and SDK source in this repository.
+
+## Support and security
+
+- SDK, MCP, contract, or example defect: [open an issue](https://github.com/heossihq/bee-public/issues)
+- Product or account support: [bee.heossi.com/contact](https://bee.heossi.com/contact)
+- Vulnerability disclosure: `bee-security@heossi.com`; see [SECURITY.md](./SECURITY.md)
+- Service health: [status](https://bee.heossi.com/status) · [changelog](https://bee.heossi.com/changelog) · [roadmap](https://bee.heossi.com/roadmap)
+
+## Contributing
+
+Read [CONTRIBUTING.md](./CONTRIBUTING.md), [SUPPORT.md](./SUPPORT.md), and the [Code of Conduct](./CODE_OF_CONDUCT.md). Generated paths must be changed in their canonical monorepo source; community examples and documentation can be proposed here and are reconciled during the next local export.
 
 ## License
 
-[Apache-2.0](./LICENSE) — © 2026 HEOSSI (Pte.) Ltd.
+[Apache License 2.0](./LICENSE) · Copyright 2026 HEOSSI (Pte.) Ltd.

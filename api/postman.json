@@ -1,0 +1,182 @@
+{
+  "info": {
+    "_postman_id": "bee-developer-api-2026-08-04",
+    "name": "Bee by HEOSSI - Developer API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "OpenAI-compatible developer API for Bee by HEOSSI. Set bee_api_key before sending authenticated requests."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.bee.heossi.com"
+    },
+    {
+      "key": "bee_api_key",
+      "value": ""
+    },
+    {
+      "key": "quantum_job_id",
+      "value": ""
+    },
+    {
+      "key": "quantum_jobs_cursor",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "List models",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/bee/models"
+      }
+    },
+    {
+      "name": "Chat completion",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bee_api_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"bee-cell\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, Bee.\"\n    }\n  ],\n  \"stream\": false\n}"
+        },
+        "url": "{{base_url}}/bee/chat/completions"
+      }
+    },
+    {
+      "name": "Chat completion (streaming)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bee_api_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "text/event-stream"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"bee-cell\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Stream a greeting.\"\n    }\n  ],\n  \"stream\": true\n}"
+        },
+        "url": "{{base_url}}/bee/chat/completions"
+      }
+    },
+    {
+      "name": "Retrieve documents",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bee_api_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"query\":\"project priorities\",\"k\":3}"
+        },
+        "url": "{{base_url}}/bee/documents/retrieve"
+      }
+    },
+    {
+      "name": "Create Quantum Reasoning Lab job",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bee_api_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"prompt\":\"Compare two fault-tolerant designs.\",\"model\":\"bee-hive\",\"product\":\"simulation_cloud\"}"
+        },
+        "url": "{{base_url}}/bee/quantum-reasoning/jobs"
+      }
+    },
+    {
+      "name": "List Quantum Reasoning Lab jobs",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bee_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/bee/quantum-reasoning/jobs?limit=25&cursor={{quantum_jobs_cursor}}"
+      }
+    },
+    {
+      "name": "Get Quantum Reasoning Lab job",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bee_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/bee/quantum-reasoning/jobs/{{quantum_job_id}}"
+      }
+    },
+    {
+      "name": "Cancel or delete Quantum Reasoning Lab job",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bee_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/bee/quantum-reasoning/jobs/{{quantum_job_id}}"
+      }
+    },
+    {
+      "name": "List memories",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bee_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/bee/memories"
+      }
+    },
+    {
+      "name": "MCP protected-resource metadata",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/oauth/protected-resource"
+      }
+    }
+  ]
+}

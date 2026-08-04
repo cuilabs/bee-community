@@ -1,24 +1,13 @@
-/**
- * Vision example — multimodal content (text + image_url) on Hive / Swarm /
- * Enclave tiers. Lower tiers (Cell / Brood / Comb / Buzz) are text-only;
- * sending image content to them returns a tier-mismatch error.
- *
- * Run:
- *   pnpm add @heossi/bee
- *   BEE_API_KEY=sk-bee-... npx tsx vision.ts
- */
+import { BeeClient } from "@heossihq/bee";
 
-import { BeeClient } from "@heossi/bee";
-
-const bee = new BeeClient({ apiKey: process.env.BEE_API_KEY ?? "" });
-
-const out = await bee.chat.completions.create({
-  model: "bee-hive",
+const bee = new BeeClient({ apiKey: process.env.BEE_API_KEY! });
+const result = await bee.chat.completions.create({
+  model: "bee-cell",
   messages: [
     {
       role: "user",
       content: [
-        { type: "text", text: "What is happening in this image? One sentence." },
+        { type: "text", text: "Describe this image in one sentence." },
         {
           type: "image_url",
           image_url: {
@@ -31,4 +20,4 @@ const out = await bee.chat.completions.create({
   max_tokens: 120,
 });
 
-console.log(out.choices[0].message.content);
+console.log(result.choices[0].message.content);

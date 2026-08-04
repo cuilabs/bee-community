@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bee.heossi.com/trust/schemas/pq-coverage-register/1.0.0",
+  "title": "Post-Quantum Coverage Register",
+  "description": "Open specification for a verifiable post-quantum coverage register. A conforming register enumerates every data flow of a product with an honest status, binds each covered mechanism to an executable production probe, and defines signing, downgrade, and disclosure semantics. Published by HEOSSI (Pte.) Ltd.; reference implementation: Bee (bee.heossi.com/trust).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "profiles", "rows", "probes", "probe_semantics", "gates", "changelog"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["register_name", "product", "operator", "version", "date", "claim", "disclosure_policy", "legal_scope", "signing"],
+      "properties": {
+        "register_name": { "type": "string", "minLength": 1 },
+        "product": { "type": "string", "minLength": 1 },
+        "operator": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "date": { "type": "string", "format": "date" },
+        "claim": { "type": "string", "minLength": 1, "description": "The exact headline claim this register scopes. Marketing language must not exceed this sentence." },
+        "predecessor_hash": { "type": ["string", "null"], "pattern": "^sha384:[0-9a-f]{96}$", "description": "Canonical hash of the previous published version; null only for the first version." },
+        "disclosure_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["internal_downgrade", "public_publication_max_hours", "exploitation_exception"],
+          "properties": {
+            "internal_downgrade": { "type": "string", "const": "immediate" },
+            "public_publication_max_hours": { "type": "integer", "minimum": 1, "maximum": 168 },
+            "exploitation_exception": { "type": "string", "description": "Policy for delaying public detail (never the downgrade itself) when publication would aid active exploitation." }
+          }
+        },
+        "legal_scope": { "type": "string", "description": "Statement of the register's legal character: factual scope declaration, precedence over marketing, non-warranty language, and contract version-pinning rule." },
+        "chain_policy": { "type": "string", "description": "Where the canonical hash chain and the signature chain each begin, and how pre-canonical drafting history is recorded." },
+        "signing": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["algorithm", "canonicalization", "key_custody", "envelope", "public_key_publication", "downgrade_diff_policy"],
+          "properties": {
+            "algorithm": { "type": "string", "enum": ["ML-DSA-65", "ML-DSA-87"] },
+            "canonicalization": { "type": "string", "description": "Deterministic serialization defining the signing preimage (e.g., UTF-8 JSON, lexicographically sorted keys, compact separators, sha384)." },
+            "key_custody": { "type": "string", "description": "Custody model for the register signing key, including the offline root and the online signer's authority limits." },
+            "envelope": { "type": "string", "description": "The detached signature envelope: filename convention, schema reference, and the rule that the signature lives outside the register file (a file cannot contain a signature over itself)." },
+            "public_key_publication": { "type": "string", "description": "Where the ML-DSA verification key is published and how it is pinned across independent surfaces so a third party can verify without trusting a single channel." },
+            "downgrade_diff_policy": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["allowed_status_transitions", "allowed_row_fields", "allowed_meta_fields", "changelog_rule"],
+              "description": "Machine-checkable whitelist bounding the online-downgrade signer's authority. Verifiers diff an online-downgrade version against its hash-bound predecessor (via predecessor_hash) using the PREDECESSOR's policy; any change outside this whitelist invalidates the envelope's authority. meta.signing must never appear in allowed_meta_fields, which makes the policy itself immutable under downgrade authority. This field exists because authority limits stated only in prose are not verifiable — the limit is spec data, enforced by tooling.",
+              "properties": {
+                "allowed_status_transitions": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["from", "to"],
+                    "properties": {
+                      "from": { "type": "string", "enum": ["covered", "partial", "excluded"] },
+                      "to": { "type": "string", "enum": ["covered", "partial", "excluded"] }
+                    }
+                  }
+                },
+                "allowed_row_fields": { "type": "array", "items": { "type": "string" }, "description": "Row fields an online-downgrade version may change; status changes are additionally constrained by allowed_status_transitions." },
+                "allowed_meta_fields": { "type": "array", "items": { "type": "string" }, "description": "Meta fields that may change (typically version, date, predecessor_hash). Must not include signing." },
+                "changelog_rule": { "type": "string", "const": "append-only-probe-initiated", "description": "Existing changelog entries are immutable (prefix check); appended entries must carry probe_initiated: true." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "tiers", "kem_floor", "sig_floor", "transport", "transport_enforcement"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "tiers": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "kem_floor": { "type": "string", "enum": ["ML-KEM-768", "ML-KEM-1024"] },
+          "sig_floor": { "type": "string", "enum": ["ML-DSA-65", "ML-DSA-87"] },
+          "transport": { "type": "string", "minLength": 1 },
+          "transport_enforcement": { "type": "string", "enum": ["prefer", "require"], "description": "prefer: hybrid offered and preferred, classical fallback permitted and measured. require: classical-only handshakes rejected." },
+          "release_signing_root": { "type": "string", "enum": ["SLH-DSA", "LMS"], "description": "Long-horizon signing root. LMS (SP 800-208) on NSS-adjacent profiles, consistent with CNSA 2.0's exclusion of SLH-DSA." },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "flow", "status", "mechanism", "key_holder", "tiers", "effective_phase", "probes", "evidence", "controls"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^R-[0-9]{2}[a-z]?$" },
+          "flow": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "enum": ["covered", "partial", "excluded"] },
+          "mechanism": { "type": "string", "minLength": 1 },
+          "key_holder": { "type": "string", "enum": ["platform", "customer", "platform_or_customer", "none"] },
+          "tiers": { "type": "string", "minLength": 1 },
+          "effective_phase": { "type": "string", "enum": ["A", "B", "C", "D", "permanent"] },
+          "gate": { "type": ["string", "null"], "pattern": "^PG-[0-9]{1,2}$" },
+          "probes": { "type": "array", "items": { "type": "string", "pattern": "^P-[0-9]{2}$" } },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label"],
+              "properties": {
+                "label": { "type": "string", "minLength": 1 },
+                "url": { "type": "string", "pattern": "^https://" },
+                "ships": { "type": "string", "enum": ["live", "A", "B", "C", "D"], "description": "live = resolvable now; otherwise the phase at which the evidence surface ships." }
+              }
+            }
+          },
+          "controls": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["framework", "control"],
+              "properties": {
+                "framework": { "type": "string", "enum": ["SOC2", "ISO27001", "PDPA", "MAS-TRM", "GDPR", "HIPAA", "PCI-DSS"] },
+                "control": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "qualifiers": { "type": "array", "items": { "type": "string" }, "description": "Honest constraints on the status (e.g., client-negotiation dependency). Qualifiers are rendered with the row, never footnoted away." },
+          "closure": { "type": ["string", "null"], "enum": ["A", "B", "C", "D", "permanent", null], "description": "For excluded rows: the phase that closes the exclusion, or 'permanent' for boundary statements." },
+          "boundary_statement": { "type": "boolean", "default": false, "description": "True when the exclusion defines the platform boundary rather than a missing mechanism." },
+          "notes": { "type": "string" }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "status": { "const": "covered" } } },
+            "then": { "properties": { "probes": { "minItems": 1 } } }
+          },
+          {
+            "if": { "properties": { "status": { "const": "excluded" } } },
+            "then": { "required": ["closure"] }
+          }
+        ]
+      }
+    },
+    "probes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "verifies_rows", "method", "cadence", "published"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^P-[0-9]{2}$" },
+          "scope": { "type": "string", "enum": ["mechanism", "meta"], "default": "mechanism", "description": "mechanism: verifies a row's protecting mechanism; rows must reference it back (bidirectional binding). meta: verifies register infrastructure itself (e.g., evidence-link health) across rows without per-row binding." },
+          "verifies_rows": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^R-[0-9]{2}[a-z]?$" } },
+          "method": { "type": "string", "minLength": 1 },
+          "cadence": { "type": "string", "minLength": 1 },
+          "published": { "type": "boolean", "description": "Conforming registers publish probe implementations so third parties can execute the identical checks. Required true for covered-row probes." },
+          "detection_note": { "type": "string", "description": "Honest statement of detection strength (e.g., sampling probability vs. exhaustive proof)." }
+        }
+      }
+    },
+    "probe_semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["states", "downgrade_trigger", "inconclusive_handling", "restoration"],
+      "properties": {
+        "states": { "type": "array", "items": { "type": "string" }, "const": ["pass", "fail", "inconclusive"] },
+        "downgrade_trigger": { "type": "string", "description": "Confirmed-failure rule that auto-downgrades a row (e.g., two consecutive fails; one fail for the end-to-end provenance probe)." },
+        "inconclusive_handling": { "type": "string", "description": "inconclusive (probe could not measure: probe error, network fault, dependency outage) pages the operator and never downgrades a row. Only confirmed mechanism failure downgrades. This distinction prevents probe-infrastructure faults or deliberate probe DoS from forcing public downgrades." },
+        "restoration": { "type": "string", "description": "Return to covered requires the probe passing again AND a signed register change." }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description", "action"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^PG-[0-9]{1,2}$" },
+          "description": { "type": "string", "minLength": 1 },
+          "action": { "type": "string", "minLength": 1 },
+          "automated_by": { "type": ["string", "null"], "pattern": "^P-[0-9]{2}$" }
+        }
+      }
+    },
+    "changelog": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["version", "date", "changes"],
+        "properties": {
+          "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+          "date": { "type": "string", "format": "date" },
+          "changes": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "probe_initiated": { "type": "boolean", "default": false }
+        }
+      }
+    }
+  }
+}

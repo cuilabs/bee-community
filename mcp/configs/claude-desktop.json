@@ -2,14 +2,8 @@
   "mcpServers": {
     "bee": {
       "command": "uvx",
-      "args": [
-        "--from",
-        "bee-sdk@latest",
-        "bee-mcp"
-      ],
-      "env": {
-        "BEE_API_KEY": "bee_sk_..."
-      }
+      "args": ["--from", "bee-sdk@latest", "bee-mcp"],
+      "env": { "BEE_API_KEY": "bee_sk_..." }
     }
   }
 }

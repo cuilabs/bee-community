@@ -1,0 +1,43 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.heossihq/bee-public",
+  "description": "Bee by HEOSSI: governed multimodal intelligence - chat, code, security, research, documents, memory.",
+  "version": "0.6.9",
+  "title": "Bee by HEOSSI",
+  "repository": {
+    "url": "https://github.com/heossihq/bee-public",
+    "source": "github"
+  },
+  "websiteUrl": "https://bee.heossi.com",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "bee-sdk",
+      "version": "0.6.9",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "BEE_API_KEY",
+          "description": "Bee API key (bee_sk_…). Create one at https://workspace.bee.heossi.com/account/api-keys - the free Cell tier works.",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "BEE_MODEL",
+          "description": "Default model tier (bee-cell … bee-swarm). Tier access follows the API key's plan. Default: bee-cell (free).",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "BEE_API_URL",
+          "description": "Override the gateway base URL (default https://api.bee.heossi.com/bee). Set only for a Bee Enclave or staging.",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

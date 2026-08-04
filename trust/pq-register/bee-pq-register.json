@@ -1,0 +1,943 @@
+{
+  "meta": {
+    "register_name": "Bee post-quantum coverage register",
+    "product": "Bee — The Progressive Intelligence Engine (bee.heossi.com)",
+    "operator": "HEOSSI (Pte.) Ltd., Singapore, UEN 202532790K",
+    "version": "0.9.9",
+    "date": "2026-07-07",
+    "claim": "Bee provides post-quantum protection across its stored-data lifecycle and every transport hop between Bee clients and the Bee platform — with the exact scope published in this register, every covered mechanism continuously probed in production, and independent verification available to anyone.",
+    "predecessor_hash": "sha384:909ad8c123d003592a9e71a206776de3f4f5fee53420a5a3a0f416f10f5f28cf1a84e6a3d4cc0e3a23c864e5468bc735",
+    "chain_policy": "The canonical hash chain begins at 0.9.2, the first version to exist in canonical JSON form; 0.9.0 and 0.9.1 were prose drafts and are recorded in the changelog only, without hashes. ML-DSA signatures begin at the PG-8 key ceremony: every version from the ceremony onward carries a detached signature envelope; 0.9.x versions before the ceremony are hash-chained but unsigned drafts.",
+    "disclosure_policy": {
+      "internal_downgrade": "immediate",
+      "public_publication_max_hours": 72,
+      "exploitation_exception": "If publishing failure detail would materially aid active exploitation, the public register entry states that the row is downgraded and under security review without the exploit-enabling detail; the full detail is published when remediation lands. The downgrade itself is never delayed or suppressed, and the internal audit-ledger record is complete from the moment of detection."
+    },
+    "legal_scope": "This register is a factual statement of cryptographic scope at the signed version and date, not a warranty of future state. It takes precedence over all marketing language: no HEOSSI marketing claim about Bee's post-quantum posture may exceed the claim sentence and row statuses of the then-current signed version. Customer contracts referencing post-quantum coverage pin a specific register version by hash. Statuses change over time under the change-control rules herein; the version history is the record.",
+    "signing": {
+      "algorithm": "ML-DSA-65",
+      "canonicalization": "UTF-8 JSON, lexicographically sorted keys, compact separators (',', ':'), hashed with SHA-384; the signature is computed over that canonical byte stream. The canonical hash of each version is anchored in the QNSI audit ledger together with the predecessor hash, forming the version chain.",
+      "key_custody": "The register root key is an offline ML-DSA key held outside CI and outside the production credential plane; it signs only (a) new register versions prepared by a human and (b) the delegation certificate of the online downgrade signer. The online downgrade signer, held in QNSI KMS with a scoped entitlement, may sign only version increments whose diff is limited to status downgrades and probe notes — it cannot sign upgrades, mechanism changes, or claim changes. CI compromise therefore cannot mint an improved register; at worst it can trigger a visible, audit-logged downgrade.",
+      "envelope": "Signatures are detached — a file cannot contain a signature over itself. Each signed version publishes bee-pq-register.v<version>.sig.json alongside the register, conforming to the signature-envelope schema (signature-envelope.schema.json): register version, canonical register hash, algorithm, signer role (offline-root or online-downgrade), key ID, public-key fingerprint, ML-DSA signature over the ASCII bytes of the register hash, timestamp, and the hash of the predecessor envelope. The online-downgrade authority limit is enforced mechanically, not by prose: the validator's --predecessor mode diffs an online-downgrade version against its hash-bound predecessor under the predecessor's downgrade_diff_policy, and without a passing diff an online-downgrade envelope cannot produce a clean VALID; the signer applies the identical check before signing.",
+      "public_key_publication": "The ML-DSA verification keys (root and downgrade) are published at bee.heossi.com/trust/keys and pinned across three independent surfaces: the QNSI audit ledger (fingerprint anchored at the key ceremony), the github.com/heossihq public mirror, and the rendered register document itself. A verifier checks the key fingerprint against at least two surfaces before trusting a signature; key rotation publishes a rotation attestation signed by the outgoing root.",
+      "downgrade_diff_policy": {
+        "allowed_status_transitions": [
+          {
+            "from": "covered",
+            "to": "partial"
+          }
+        ],
+        "allowed_row_fields": [
+          "status",
+          "notes"
+        ],
+        "allowed_meta_fields": [
+          "version",
+          "date",
+          "predecessor_hash"
+        ],
+        "changelog_rule": "append-only-probe-initiated"
+      }
+    }
+  },
+  "profiles": [
+    {
+      "id": "default",
+      "tiers": [
+        "Cell"
+      ],
+      "kem_floor": "ML-KEM-768",
+      "sig_floor": "ML-DSA-65",
+      "transport": "Hybrid X25519 + ML-KEM-768",
+      "transport_enforcement": "prefer",
+      "release_signing_root": "SLH-DSA",
+      "notes": "Platform baseline. Classical fallback permitted for clients without ML-KEM support; negotiated-group rates measured and published via P-01."
+    },
+    {
+      "id": "strict",
+      "tiers": [
+        "Brood",
+        "Comb",
+        "Buzz"
+      ],
+      "kem_floor": "ML-KEM-768",
+      "sig_floor": "ML-DSA-65",
+      "transport": "Hybrid X25519 + ML-KEM-768",
+      "transport_enforcement": "prefer",
+      "release_signing_root": "SLH-DSA",
+      "notes": "Signed audit mandatory."
+    },
+    {
+      "id": "maximum",
+      "tiers": [
+        "Hive",
+        "Swarm",
+        "Enclave (regulated_cloud — planned)"
+      ],
+      "kem_floor": "ML-KEM-1024",
+      "sig_floor": "ML-DSA-87",
+      "transport": "Hybrid X25519 + ML-KEM, ML-KEM-1024 preferred",
+      "transport_enforcement": "prefer",
+      "release_signing_root": "SLH-DSA",
+      "notes": "BYOK available; signed inference receipts; tenant may opt into transport_enforcement=require on dedicated endpoints. The Enclave regulated_cloud variant maps here deliberately: a mid-market regulated-cloud tier gets ML-KEM-1024 floors and BYOK without inheriting require-enforcement (which would reject legacy corporate clients) or CNSA 2.0 obligations sized for NSS-adjacent procurement. regulated_cloud is a planned tier (goes live with the marketing-site refresh); its mapping here is target-state and must not appear in v1.0 marketing prose until the tier is live."
+    },
+    {
+      "id": "government",
+      "tiers": [
+        "Enclave (private)",
+        "Enclave (regulated)",
+        "Enclave (sovereign)"
+      ],
+      "kem_floor": "ML-KEM-1024",
+      "sig_floor": "ML-DSA-87",
+      "transport": "Hybrid X25519 + ML-KEM-1024",
+      "transport_enforcement": "require",
+      "release_signing_root": "LMS",
+      "notes": "AES-256 / SHA-384 baseline; classical-only handshakes rejected; endpoint TLS cipher policy pins TLS_AES_256_GCM_SHA384 (shared endpoints currently negotiate AES-128-GCM, which satisfies hybrid confidentiality on prefer-profiles but not this profile's symmetric baseline — a concrete server-configuration item verified by P-01 on require-enforcement endpoints); FIPS 140-3 module path (AWS-LC-FIPS, whose validation includes ML-KEM); SLH-DSA not used on this profile, consistent with CNSA 2.0. ML-KEM-768 / ML-DSA-65 are appropriate civilian defaults and are NOT CNSA 2.0 compliant; CNSA 2.0 names ML-KEM-1024 and ML-DSA-87."
+    }
+  ],
+  "rows": [
+    {
+      "id": "R-01",
+      "flow": "Client-to-platform transit: workspace, OpenAI-compatible API, MCP, mobile",
+      "status": "covered",
+      "mechanism": "Hybrid PQC-TLS (X25519 + ML-KEM-768; ML-KEM-1024 on maximum/government) offered and preferred on every endpoint; government profile rejects classical-only handshakes.",
+      "key_holder": "platform",
+      "tiers": "All",
+      "effective_phase": "A",
+      "gate": null,
+      "probes": [
+        "P-01"
+      ],
+      "evidence": [
+        {
+          "label": "Live PQC-TLS canary endpoint",
+          "ships": "A"
+        },
+        {
+          "label": "QNSI NIST ACVP conformance vectors",
+          "url": "https://qnsi.heossi.com/verify/conformance",
+          "ships": "live"
+        },
+        {
+          "label": "Negotiated-group telemetry (share of sessions completing hybrid PQ key exchange, by surface)",
+          "ships": "B"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "SOC2",
+          "control": "CC6.7"
+        },
+        {
+          "framework": "ISO27001",
+          "control": "A.8.24"
+        }
+      ],
+      "qualifiers": [
+        "Hybrid key exchange requires client-side support; sessions from clients or middleboxes without ML-KEM negotiate classical TLS on prefer-enforcement profiles. The guarantee on those profiles is server-side offer-and-prefer plus published negotiation rates — not per-session PQ. Per-session PQ is guaranteed only where transport_enforcement=require."
+      ]
+    },
+    {
+      "id": "R-02",
+      "flow": "Software update channels: desktop builds, SDK packages, CLI",
+      "status": "covered",
+      "mechanism": "Releases ML-DSA-signed with verify-on-install; SLH-DSA release root (commercial), LMS root (government profile); delivery over hybrid PQC-TLS.",
+      "key_holder": "platform",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": null,
+      "probes": [
+        "P-02"
+      ],
+      "evidence": [
+        {
+          "label": "Published release-signing keys and verification instructions",
+          "url": "https://bee.heossi.com/trust",
+          "ships": "B"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "ISO27001",
+          "control": "A.8.24"
+        }
+      ]
+    },
+    {
+      "id": "R-03",
+      "flow": "Internal service-to-service transit within the Bee platform boundary",
+      "status": "partial",
+      "mechanism": "Perimeter is PQC (R-01); internal hops run mutually authenticated TLS inside a private network; internal hybrid-PQC mTLS is the closure.",
+      "key_holder": "platform",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": "PG-1",
+      "probes": [
+        "P-07"
+      ],
+      "evidence": [
+        {
+          "label": "Internal transit architecture note",
+          "ships": "B"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "SOC2",
+          "control": "CC6.7"
+        }
+      ]
+    },
+    {
+      "id": "R-04",
+      "flow": "Conversations and persistent memory, at rest",
+      "status": "covered",
+      "mechanism": "AES-256-GCM per-object DEK, wrapped via ML-KEM to a per-tenant KEK in QNSI KMS; no RSA/ECDH anywhere in the wrap chain.",
+      "key_holder": "platform_or_customer",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": null,
+      "probes": [
+        "P-03"
+      ],
+      "evidence": [
+        {
+          "label": "Key-hierarchy architecture note",
+          "ships": "B"
+        },
+        {
+          "label": "QNSI KMS conformance evidence",
+          "url": "https://qnsi.heossi.com/verify/conformance",
+          "ships": "live"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "SOC2",
+          "control": "CC6.1"
+        },
+        {
+          "framework": "ISO27001",
+          "control": "A.8.24"
+        },
+        {
+          "framework": "PDPA",
+          "control": "Protection obligation"
+        }
+      ]
+    },
+    {
+      "id": "R-05",
+      "flow": "User uploads and RAG document store, at rest",
+      "status": "covered",
+      "mechanism": "Same envelope scheme as R-04; tenant isolation is cryptographic (distinct KEK per tenant), not only logical.",
+      "key_holder": "platform_or_customer",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": null,
+      "probes": [
+        "P-03"
+      ],
+      "evidence": [
+        {
+          "label": "As R-04",
+          "ships": "B"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "SOC2",
+          "control": "CC6.1"
+        },
+        {
+          "framework": "PDPA",
+          "control": "Protection obligation"
+        }
+      ]
+    },
+    {
+      "id": "R-06",
+      "flow": "Embeddings and vector index, at rest",
+      "status": "covered",
+      "mechanism": "Vectors and index segments encrypted under the tenant DEK scheme (SSE-X-backed on Buzz and above).",
+      "key_holder": "platform_or_customer",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": null,
+      "probes": [
+        "P-03"
+      ],
+      "evidence": [
+        {
+          "label": "SSE-X capability documentation",
+          "url": "https://qnsi.heossi.com/capabilities",
+          "ships": "live"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "ISO27001",
+          "control": "A.8.24"
+        }
+      ]
+    },
+    {
+      "id": "R-07",
+      "flow": "Embeddings and vector index, in memory during query execution",
+      "status": "excluded",
+      "mechanism": "Similarity search requires plaintext vectors in RAM at query time. Encrypted at rest, plaintext in memory during search.",
+      "key_holder": "none",
+      "tiers": "n/a",
+      "effective_phase": "D",
+      "gate": null,
+      "probes": [],
+      "evidence": [
+        {
+          "label": "This register, published at the Bee trust page",
+          "url": "https://bee.heossi.com/trust",
+          "ships": "live"
+        }
+      ],
+      "controls": [],
+      "closure": "D"
+    },
+    {
+      "id": "R-08",
+      "flow": "Backups and snapshots",
+      "status": "partial",
+      "mechanism": "Backup sets encrypted; every backup key chain must terminate in ML-KEM-wrapped keys within the tenant KEK lineage (so BYOK crypto-shredding covers backups), with zero classical public-key wraps. Asserted as covered only after PG-2.",
+      "key_holder": "platform",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": "PG-2",
+      "probes": [
+        "P-03"
+      ],
+      "evidence": [
+        {
+          "label": "Backup key-chain audit result",
+          "ships": "B"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "SOC2",
+          "control": "CC6.1"
+        }
+      ],
+      "notes": "Consequence stated plainly: because backup chains sit inside tenant KEK lineage, KEK destruction (R-15) renders backups unreadable too — restore-after-offboarding is cryptographically impossible, by design. Retention and legal-hold procedure (see R-15 notes) governs when destruction may execute."
+    },
+    {
+      "id": "R-09",
+      "flow": "Logs and telemetry",
+      "status": "partial",
+      "mechanism": "Prompt and completion content scrubbed at source from operational logs; log stores encrypted under the platform envelope scheme; bounded retention. Operational metadata (timestamps, tier, token counts, latency) retained.",
+      "key_holder": "platform",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": "PG-3",
+      "probes": [
+        "P-03",
+        "P-10"
+      ],
+      "evidence": [
+        {
+          "label": "Logging policy, Security Practices",
+          "url": "https://bee.heossi.com/legal/security",
+          "ships": "live"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "PDPA",
+          "control": "Protection obligation"
+        }
+      ]
+    },
+    {
+      "id": "R-10a",
+      "flow": "Prompt / semantic caches, persisted to durable storage",
+      "status": "covered",
+      "mechanism": "Any cache written to durable storage falls under the R-04 envelope scheme.",
+      "key_holder": "platform",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": null,
+      "probes": [
+        "P-03"
+      ],
+      "evidence": [
+        {
+          "label": "Architecture note",
+          "ships": "B"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "ISO27001",
+          "control": "A.8.24"
+        }
+      ]
+    },
+    {
+      "id": "R-10b",
+      "flow": "Prompt / semantic caches, transient in-memory",
+      "status": "excluded",
+      "mechanism": "Transient in-memory caches carry the R-07/R-16 plaintext-in-memory exclusion.",
+      "key_holder": "none",
+      "tiers": "n/a",
+      "effective_phase": "D",
+      "gate": null,
+      "probes": [],
+      "evidence": [
+        {
+          "label": "This register, published at the Bee trust page",
+          "url": "https://bee.heossi.com/trust",
+          "ships": "live"
+        }
+      ],
+      "controls": [],
+      "closure": "D"
+    },
+    {
+      "id": "R-11",
+      "flow": "Model weights, LoRA adapters, system prompts, tool and MCP manifests",
+      "status": "covered",
+      "mechanism": "ML-DSA-signed at build; the inference gateway verifies signatures at load and refuses unsigned artifacts; confidentiality at rest under the R-04 envelope.",
+      "key_holder": "platform",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": null,
+      "probes": [
+        "P-04"
+      ],
+      "evidence": [
+        {
+          "label": "Artifact-signing policy and public verification key",
+          "url": "https://bee.heossi.com/trust",
+          "ships": "B"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "ISO27001",
+          "control": "A.8.24"
+        }
+      ]
+    },
+    {
+      "id": "R-12",
+      "flow": "Audit records and per-response inference receipts",
+      "status": "covered",
+      "mechanism": "ML-DSA-signed event at response time (synchronous); at-least-once delivery via transactional outbox; anchored into ML-DSA-signed Merkle checkpoints. Receipt states: signed (immediate) and anchored (SLO: 99.9% within 5 minutes). Receipt content commitments are salted per-tenant HMACs, not bare hashes, so a low-entropy prompt cannot be confirmed by dictionary attack against a receipt; receipt identifiers are non-sequential and the public verifier is rate-limited and non-enumerable. Each receipt embeds the register version in force at issue time.",
+      "key_holder": "platform",
+      "tiers": "Signed audit: Brood+; receipts: Swarm/Hive+",
+      "effective_phase": "B",
+      "gate": "PG-5",
+      "probes": [
+        "P-05"
+      ],
+      "qualifiers": [
+        "The 5-minute anchoring SLO is provisional: it has not yet been verified against the audit service's actual Merkle checkpoint cadence. PG-5 closure includes measuring the checkpoint interval; the SLO published at v1.0 is the measured, cadence-derived figure, and P-05 enforces whatever number is published."
+      ],
+      "evidence": [
+        {
+          "label": "Public receipt-verification endpoint",
+          "ships": "B"
+        },
+        {
+          "label": "QNSI audit-ledger documentation",
+          "url": "https://qnsi.heossi.com/platform",
+          "ships": "live"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "SOC2",
+          "control": "CC7.2"
+        },
+        {
+          "framework": "MAS-TRM",
+          "control": "Audit logging and cryptography guidelines"
+        }
+      ]
+    },
+    {
+      "id": "R-13",
+      "flow": "Platform secrets and agent/tool credentials",
+      "status": "covered",
+      "mechanism": "Held in QNSI Vault (ML-KEM-wrapped server-side), never in Bee's application database; scoped entitlements per service.",
+      "key_holder": "platform",
+      "tiers": "All",
+      "effective_phase": "A",
+      "gate": null,
+      "probes": [
+        "P-06"
+      ],
+      "evidence": [
+        {
+          "label": "QNSI Vault documentation",
+          "url": "https://qnsi.heossi.com/capabilities",
+          "ships": "live"
+        },
+        {
+          "label": "Phase-A production proof (re-runnable)",
+          "ships": "A"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "SOC2",
+          "control": "CC6.1"
+        }
+      ]
+    },
+    {
+      "id": "R-14",
+      "flow": "Key material and the wrap chain itself",
+      "status": "covered",
+      "mechanism": "All KEK/DEK wrapping via ML-KEM through QNSI KMS; documented entropy chain (NIST SP 800-90A/B/C); no quantum-vulnerable public-key algorithm anywhere in the chain.",
+      "key_holder": "platform_or_customer",
+      "tiers": "All",
+      "effective_phase": "A",
+      "gate": null,
+      "probes": [
+        "P-03",
+        "P-07"
+      ],
+      "evidence": [
+        {
+          "label": "QNSI entropy chain",
+          "url": "https://qnsi.heossi.com/security/entropy",
+          "ships": "live"
+        },
+        {
+          "label": "QNSI algorithm catalog",
+          "url": "https://qnsi.heossi.com/algorithms",
+          "ships": "live"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "ISO27001",
+          "control": "A.8.24"
+        }
+      ]
+    },
+    {
+      "id": "R-15",
+      "flow": "BYOK migration and crypto-shredding",
+      "status": "covered",
+      "mechanism": "On upgrade, per-object DEKs are re-wrapped under the customer's QNSI KEK (data is never re-encrypted); the platform KEK is schedule-destroyed; an ML-DSA-signed migration attestation (key IDs, object counts, timestamps) enters the audit ledger. Offboarding: KEK destruction is cryptographic erasure, with signed destruction attestation covering primary stores and backups (R-08).",
+      "key_holder": "customer",
+      "tiers": "Hive / Swarm / Enclave",
+      "effective_phase": "C",
+      "gate": null,
+      "probes": [
+        "P-09"
+      ],
+      "evidence": [
+        {
+          "label": "BYOK runbook (public architecture note)",
+          "ships": "C"
+        },
+        {
+          "label": "Sample migration attestation",
+          "ships": "C"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "SOC2",
+          "control": "CC6.1"
+        },
+        {
+          "framework": "PDPA",
+          "control": "Retention limitation"
+        }
+      ],
+      "qualifiers": [
+        "Custody semantics, stated precisely: while Bee serves the tenant, Bee holds a customer-revocable wrap/unwrap entitlement on the customer's KEK and can therefore decrypt tenant data in the course of providing the service — inference requires it. The guarantee is not that HEOSSI can never read the data; it is that the customer can revoke or destroy the key unilaterally at any moment, after which the data is unreadable to HEOSSI — including support, including backups — with no recovery path."
+      ],
+      "notes": "Destruction executes only after the retention / legal-hold check in the offboarding runbook: destruction is blocked while a documented legal hold is active, and every destruction records the hold-check result in the attestation, so crypto-shredding is never spoliation."
+    },
+    {
+      "id": "R-16",
+      "flow": "Plaintext in host/GPU memory during inference",
+      "status": "excluded",
+      "mechanism": "Model execution operates on plaintext activations in RAM/VRAM, as with every production LLM today. Closure: Phase D confidential-compute inference (hardware enclaves) on Enclave deployments.",
+      "key_holder": "none",
+      "tiers": "n/a",
+      "effective_phase": "D",
+      "gate": null,
+      "probes": [],
+      "evidence": [
+        {
+          "label": "This register, published at the Bee trust page",
+          "url": "https://bee.heossi.com/trust",
+          "ships": "live"
+        }
+      ],
+      "controls": [],
+      "closure": "D"
+    },
+    {
+      "id": "R-17",
+      "flow": "Host memory hygiene: swap, core dumps, crash reports",
+      "status": "partial",
+      "mechanism": "Inference and gateway hosts run with core dumps disabled, swap disabled or encrypted, and crash reports scrubbed of request content — so the R-16 in-memory exclusion cannot silently leak onto disk. Asserted as covered only after PG-6 host-hygiene audit.",
+      "key_holder": "platform",
+      "tiers": "All",
+      "effective_phase": "B",
+      "gate": "PG-6",
+      "probes": [
+        "P-07"
+      ],
+      "evidence": [
+        {
+          "label": "Host hardening baseline note",
+          "ships": "B"
+        }
+      ],
+      "controls": [
+        {
+          "framework": "ISO27001",
+          "control": "A.8.9"
+        }
+      ],
+      "notes": "This row exists because plaintext-in-memory (R-16) is only an honest exclusion if memory never reaches persistent media through side channels."
+    },
+    {
+      "id": "R-18",
+      "flow": "Third-party model egress",
+      "status": "excluded",
+      "mechanism": "This claim applies to Bee-native model routes only. Any Bee surface proxying to an external model provider is labeled in-product and carries no post-quantum lifecycle claim.",
+      "key_holder": "none",
+      "tiers": "n/a",
+      "effective_phase": "permanent",
+      "gate": null,
+      "probes": [],
+      "evidence": [
+        {
+          "label": "In-product route labeling",
+          "ships": "B"
+        }
+      ],
+      "controls": [],
+      "closure": "permanent",
+      "boundary_statement": true
+    },
+    {
+      "id": "R-19",
+      "flow": "Third-party subprocessors (billing, email, infrastructure providers)",
+      "status": "excluded",
+      "mechanism": "Bee does not assert the post-quantum posture of subprocessors. Current list maintained in the DPA; data shared with subprocessors is minimized per the Privacy Policy.",
+      "key_holder": "none",
+      "tiers": "n/a",
+      "effective_phase": "permanent",
+      "gate": null,
+      "probes": [],
+      "evidence": [
+        {
+          "label": "DPA subprocessor list",
+          "url": "https://bee.heossi.com/legal/dpa",
+          "ships": "live"
+        }
+      ],
+      "controls": [],
+      "closure": "permanent",
+      "boundary_statement": true
+    },
+    {
+      "id": "R-20",
+      "flow": "Customer-controlled surfaces: user devices, exported data, customer-side integrations",
+      "status": "excluded",
+      "mechanism": "Outside the platform boundary. Exports are delivered over PQC transport (R-01); protection after delivery is the customer's.",
+      "key_holder": "customer",
+      "tiers": "n/a",
+      "effective_phase": "permanent",
+      "gate": null,
+      "probes": [],
+      "evidence": [
+        {
+          "label": "This register, published at the Bee trust page",
+          "url": "https://bee.heossi.com/trust",
+          "ships": "live"
+        }
+      ],
+      "controls": [],
+      "closure": "permanent",
+      "boundary_statement": true
+    }
+  ],
+  "probes": [
+    {
+      "id": "P-01",
+      "verifies_rows": [
+        "R-01"
+      ],
+      "method": "Connect to the public canary on each surface; assert the negotiated key-exchange group is hybrid X25519+ML-KEM at or above the profile floor; on require-enforcement endpoints, assert a classical-only handshake is rejected and the negotiated cipher suite is TLS_AES_256_GCM_SHA384. Additionally aggregate production negotiated-group telemetry and publish the hybrid-completion rate per surface.",
+      "cadence": "Hourly (canary); daily (telemetry aggregation)",
+      "published": true
+    },
+    {
+      "id": "P-02",
+      "verifies_rows": [
+        "R-02"
+      ],
+      "method": "Fetch the latest published release artifact per channel; verify its ML-DSA signature against the published key; verify the root chain (SLH-DSA commercial, LMS government).",
+      "cadence": "Per release + daily",
+      "published": true
+    },
+    {
+      "id": "P-03",
+      "verifies_rows": [
+        "R-04",
+        "R-05",
+        "R-06",
+        "R-08",
+        "R-09",
+        "R-10a",
+        "R-14"
+      ],
+      "method": "Sample N wrapped-DEK records per store from production; parse each wrap chain; assert every wrap is ML-KEM at or above the tenant's profile floor and zero classical public-key OIDs appear anywhere in the chain.",
+      "cadence": "Daily",
+      "published": true,
+      "detection_note": "Statistical sampling: provides high-probability detection of systemic misconfiguration, not exhaustive proof over every record. Sample size and store coverage are published with the probe implementation; customers can run the identical check exhaustively against their own data export."
+    },
+    {
+      "id": "P-04",
+      "verifies_rows": [
+        "R-11"
+      ],
+      "method": "Select a random deployed model/adapter/manifest; verify its ML-DSA signature. Confirm the gateway's verify-at-load rejection path with a deliberately unsigned test artifact in staging.",
+      "cadence": "Daily",
+      "published": true
+    },
+    {
+      "id": "P-05",
+      "verifies_rows": [
+        "R-12"
+      ],
+      "method": "Submit a synthetic inference on a canary tenant; verify the receipt reaches signed immediately and anchored within SLO via the public verifier endpoint; record end-to-end latency percentiles for the published performance figures.",
+      "cadence": "Every 15 minutes",
+      "published": true
+    },
+    {
+      "id": "P-06",
+      "verifies_rows": [
+        "R-13"
+      ],
+      "method": "Schema scan asserting zero secrets present in the application database; confirm each service credential resolves only through its scoped QNSI Vault entitlement.",
+      "cadence": "Daily",
+      "published": true
+    },
+    {
+      "id": "P-07",
+      "verifies_rows": [
+        "R-03",
+        "R-14",
+        "R-17"
+      ],
+      "method": "Export the CycloneDX CBOM from QNSI crypto-inventory; diff against the register's profiles and flag any deployed algorithm, parameter set, or identifier not matching the claim; include host-hardening configuration assertions (core dumps, swap) in the per-release configuration diff.",
+      "cadence": "Per release + weekly",
+      "published": true
+    },
+    {
+      "id": "P-08",
+      "scope": "meta",
+      "verifies_rows": [
+        "R-01",
+        "R-02",
+        "R-04",
+        "R-09",
+        "R-12",
+        "R-13",
+        "R-14",
+        "R-19"
+      ],
+      "method": "Resolve every evidence URL in the canonical register with ships=live; fail on any dead or changed-beyond-tolerance link. Meta-probe: it verifies the register's evidence infrastructure across rows, not any row's protecting mechanism, so rows do not bind to it. Automates gate PG-7 permanently after v1.0.",
+      "cadence": "Daily",
+      "published": true
+    },
+    {
+      "id": "P-09",
+      "verifies_rows": [
+        "R-15"
+      ],
+      "method": "On every migration and destruction event: verify the signed attestation's ML-DSA signature, ledger inclusion, object-count consistency against the tenant store, and the recorded legal-hold check result.",
+      "cadence": "Event-driven",
+      "published": true
+    },
+    {
+      "id": "P-10",
+      "verifies_rows": [
+        "R-09"
+      ],
+      "method": "Submit a synthetic inference on a canary tenant whose prompt and completion contain a unique high-entropy marker token; after the logging pipeline's flush interval, scan all operational log stores and shipped log destinations for the marker; fail if the marker appears anywhere outside the encrypted conversation store. Converts the one-time PG-3 scrubbing audit into continuous regression detection — a scrub regression auto-downgrades R-09 instead of surviving silently.",
+      "cadence": "Daily",
+      "published": true
+    }
+  ],
+  "probe_semantics": {
+    "states": [
+      "pass",
+      "fail",
+      "inconclusive"
+    ],
+    "downgrade_trigger": "Two consecutive confirmed fails (one confirmed fail for P-05) downgrade every row the probe verifies to partial, re-sign the register via the online downgrade signer, record the event in the audit ledger, and page the operator.",
+    "inconclusive_handling": "inconclusive means the probe could not measure (probe error, network fault, dependency outage) — it pages the operator and never downgrades a row. Only confirmed mechanism failure downgrades. This prevents probe-infrastructure faults, or deliberate denial-of-service against probe targets, from forcing public downgrades.",
+    "restoration": "Return to covered requires the probe passing again AND a signed register change via the offline root — the online downgrade signer cannot restore status."
+  },
+  "gates": [
+    {
+      "id": "PG-1",
+      "description": "Internal service-to-service transit inventoried; R-03 status confirmed against the deployed network path (or upgraded to covered if internal hybrid-PQC mTLS ships first).",
+      "action": "Network path audit",
+      "automated_by": null
+    },
+    {
+      "id": "PG-2",
+      "description": "Backup and snapshot key chains audited end-to-end: zero RSA/ECDH wraps; chains terminate in ML-KEM-wrapped keys within tenant KEK lineage.",
+      "action": "Backup key-chain audit",
+      "automated_by": null
+    },
+    {
+      "id": "PG-3",
+      "description": "Log-scrubbing verified against production log samples: no prompt/completion content in operational logs; retention limits enforced.",
+      "action": "Log audit",
+      "automated_by": null
+    },
+    {
+      "id": "PG-4",
+      "description": "FIPS 203 final conformance of the deployed KEM confirmed (parameter encoding and OIDs, not round-3 Kyber); all public identifiers renamed to ML-KEM-*; CI lint rejects 'kyber' in customer-facing strings.",
+      "action": "Library conformance check + rename",
+      "automated_by": "P-07"
+    },
+    {
+      "id": "PG-5",
+      "description": "Public receipt-verification endpoint live with salted commitments, non-enumerable identifiers, and rate limiting; a third party can verify a receipt with no Bee account.",
+      "action": "Ship verifier endpoint",
+      "automated_by": "P-05"
+    },
+    {
+      "id": "PG-6",
+      "description": "Host memory hygiene audited: core dumps disabled, swap disabled or encrypted, crash reports scrubbed of request content on all inference and gateway hosts.",
+      "action": "Host hardening audit",
+      "automated_by": "P-07"
+    },
+    {
+      "id": "PG-7",
+      "description": "Every evidence link marked ships=live resolves to live content; thereafter enforced permanently by P-08.",
+      "action": "Link audit",
+      "automated_by": "P-08"
+    },
+    {
+      "id": "PG-8",
+      "description": "Canonical register live with CI gate enforced (release diffs against register; crypto-behavior changes without a signed register change fail the build); probe suite P-01 through P-08 deployed and green for 7 consecutive days; signing custody (offline root + limited online downgrade signer) operational.",
+      "action": "Claims-as-code + probe rollout + key ceremony",
+      "automated_by": null
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.9.0",
+      "date": "2026-07-07",
+      "changes": [
+        "Initial pre-publication draft: claim, definitions, profiles, coverage matrix, vendor-test answers, publication gates."
+      ]
+    },
+    {
+      "version": "0.9.1",
+      "date": "2026-07-07",
+      "changes": [
+        "Register upgraded to a control plane: claims-as-code canonical form with CI enforcement; probe suite with auto-downgrade; crypto-agility re-wrap RTO commitment; per-tenant coverage endpoint, policy-versioned receipts, compliance cross-mapping, open specification."
+      ]
+    },
+    {
+      "version": "0.9.2",
+      "date": "2026-07-07",
+      "changes": [
+        "Risk hardening. R-01: transport claim made negotiation-honest — per-session PQ guaranteed only under require-enforcement; prefer-profiles publish negotiated-group rates (P-01 extended).",
+        "R-15: custody semantics corrected — Bee holds a customer-revocable wrap/unwrap entitlement while serving; the guarantee is unilateral revocation/destruction, not that HEOSSI can never read. Legal-hold check added before destruction; attestation records it.",
+        "R-12: receipt commitments changed to salted per-tenant HMACs; non-sequential receipt identifiers; rate-limited, non-enumerable public verifier.",
+        "New R-17: host memory hygiene (swap, core dumps, crash reports) with gate PG-6, so the in-memory exclusion cannot leak to disk unstated.",
+        "R-08: backup chains bound into tenant KEK lineage so crypto-shredding verifiably covers backups; restore-after-offboarding impossibility stated.",
+        "Probe semantics: third state 'inconclusive' added — probe faults and probe-DoS page the operator but never downgrade; restoration requires the offline root.",
+        "meta: disclosure policy (immediate internal downgrade, public within 72h, exploitation-detail exception), legal scope (register precedence over marketing, contract version-pinning), and signing key custody (offline root; online signer limited to downgrades) added.",
+        "Row 10 split into R-10a (persisted, covered) and R-10b (transient, excluded) for machine consumption."
+      ]
+    },
+    {
+      "version": "0.9.3",
+      "date": "2026-07-07",
+      "changes": [
+        "Independent review response. Detached signature envelope defined: signature-envelope.schema.json, filename convention bee-pq-register.v<version>.sig.json, signer roles (offline-root / online-downgrade), and public-key publication pinned across three surfaces (bee.heossi.com/trust/keys, QNSI audit ledger, github.com/heossihq) — closing the gap that a verifier had no artifact to verify with.",
+        "Enclave family variants enumerated: private/regulated/sovereign remain on the government profile; the planned regulated_cloud variant maps to the maximum profile so a mid-market cloud tier does not inherit require-enforcement or CNSA 2.0 procurement obligations.",
+        "Hash chain contradiction resolved: chain_policy added; the canonical chain begins at 0.9.2 (first canonical-JSON version, hash sha384:f96fdd5b…), 0.9.0–0.9.1 were prose drafts recorded in changelog only; signatures begin at the PG-8 key ceremony. predecessor_hash of this version is 0.9.2's verified hash.",
+        "New probe P-10: synthetic marker-token regression test for log scrubbing, binding R-09 — a scrub regression now auto-downgrades instead of surviving the one-time PG-3 audit.",
+        "P-08 reclassified as a meta-probe (scope field added to the specification): it verifies register evidence infrastructure, not row mechanisms, resolving the one-way binding.",
+        "Government profile: endpoint cipher policy pinned to TLS_AES_256_GCM_SHA384 and added to P-01 assertions on require-enforcement endpoints — review probes showed shared endpoints negotiate AES-128-GCM, acceptable on prefer-profiles only.",
+        "R-12 anchoring SLO marked provisional pending measurement of the audit service's Merkle checkpoint cadence at PG-5.",
+        "Recorded: independent review hand-ran P-01 and P-08 equivalents on 2026-07-07 — hybrid X25519MLKEM768 negotiated in production on bee.heossi.com, qnsi.heossi.com, and api.qnsi.heossi.com, and all ships=live evidence URLs resolved — empirically confirming R-01's mechanism ahead of Phase A."
+      ]
+    },
+    {
+      "version": "0.9.4",
+      "date": "2026-07-07",
+      "changes": [
+        "regulated_cloud marked as a planned tier: its mapping to the maximum profile is target-state (the tier goes live with the marketing-site refresh) and must not appear in v1.0 marketing prose until the tier exists.",
+        "Toolchain: the validator gained cryptographic ML-DSA signature verification (--public-key mode; backend order liboqs, then dilithium-py pure-Python FIPS 204) with a public-key fingerprint check against the envelope; sign_register.py added as the ceremony signer, producing schema-conformant detached envelopes from a validated register only.",
+        "Envelope schema: public-key fingerprint definition made encoding-agnostic — SHA-384 over the public-key bytes exactly as published at the pinning surfaces — so pinning is over the published artifact rather than a specific ASN.1 encoding.",
+        "Full sign-and-verify loop rehearsed end-to-end with an ephemeral TEST keypair (explicitly not the ceremony key): keygen, envelope generation over this version's canonical hash, cryptographic verification, and tamper rejection all demonstrated. The PG-8 ceremony now has a tested runbook."
+      ]
+    },
+    {
+      "version": "0.9.5",
+      "date": "2026-07-07",
+      "changes": [
+        "Security finding (independent review, test F): the online-downgrade authority limit existed only in prose — a register upgraded from partial to covered, signed with the online-downgrade key, verified clean. This defeated the purpose of the two-key custody design: CI compromise could mint an improved register.",
+        "Fix, in the spec: downgrade_diff_policy added as required signing data — a machine-checkable whitelist (permitted status transitions, permitted row fields, permitted meta fields, append-only probe-initiated changelog rule). The policy lives in the predecessor and meta.signing is never whitelisted, so the policy is immutable under downgrade authority.",
+        "Fix, in the validator: --predecessor mode. For an online-downgrade envelope, the validator binds the supplied predecessor by hash (register.predecessor_hash must equal the predecessor's computed canonical hash), then diffs under the predecessor's policy; any out-of-whitelist change fails validation. An online-downgrade envelope without --predecessor can no longer produce a clean VALID.",
+        "Fix, in the signer: the identical diff check runs before signing — sign_register.py refuses to sign a non-downgrade diff with --signer online-downgrade.",
+        "Production-signing guard: the pure-Python dilithium-py backend (not constant-time) is refused for signing unless the key ID is explicitly a TEST key; production ceremony signing requires liboqs. Verification remains backend-agnostic (public inputs).",
+        "Rehearsal hygiene: the 0.9.4 rehearsal secret key destroyed; fresh ephemeral TEST keys generated for the 0.9.5 rehearsal and destroyed after it."
+      ]
+    },
+    {
+      "version": "0.9.6",
+      "date": "2026-07-07",
+      "changes": [
+        "Toolchain: ci_gate.py added — the release gate PG-8 requires. Five checks per release candidate: (1) register schema and cross-reference validation via the published validator CLI; (2) detached-envelope verification including cryptographic ML-DSA verification and the online-downgrade authority diff; (3) render reproducibility — a fresh render must be byte-identical to the committed document, so a hand-edited rendering fails the build; (4) CycloneDX CBOM conformance — KEM and signature components must use identifiers permitted by the register's profiles, and banned legacy identifiers (kyber, crystals-*, sphincs+) fail anywhere they appear, automating the PG-4 lint permanently; (5) customer-facing string lint over supplied source paths. Skipped inputs are reported SKIPPED, never silently passed.",
+        "Gate adversarially tested before shipping: a hand-edited rendering, a CBOM carrying a kyber-768 component, and a source file containing a legacy identifier each fail the gate; the clean release candidate passes all five checks including cryptographic envelope verification.",
+        "Probe implementations P-01 through P-10 are deliberately not part of this toolchain: probes ship as real implementations wired to production surfaces in the product repository (published: true requires executable, third-party-runnable code, not stubs), fulfilling this register as their contract."
+      ]
+    },
+    {
+      "version": "0.9.7",
+      "date": "2026-07-07",
+      "changes": [
+        "CI gate finding (independent review, live QNSI CBOM through the gate): a CBOM of unclassified components (primitive other/unknown, pqcReadiness 0%) passed conformance vacuously — the check only inspected classified KEM/signature components. Fix: unclassified cryptographic assets now surface as warnings with a classified/unclassified summary on every run, and --strict promotes them to failures. Semantics confirmed live and recorded: the CBOM classifies the stored asset (a vault password is classical), not the envelope protecting it — envelope coverage remains probe P-03 responsibility; the production P-07 implementation must treat unclassified wrap-chain-relevant components as findings.",
+        "Ban list extended: bare dilithium and falcon (FN-DSA legacy name) added alongside kyber and sphincs+ — QNSI uses dilithium-N identifiers internally, so without this the legacy naming would leak into Bee-facing strings during Phase B unlinted. crystals-* variants are covered by substring."
+      ]
+    },
+    {
+      "version": "0.9.8",
+      "date": "2026-07-07",
+      "changes": [
+        "Distribution finding (independent review): version sets were being published as deltas — 0.9.7 shipped without the validator, renderer, signer, backend, schemas, and template, so the gate failed on arrival in a fresh directory, contradicting the register operations promise that the toolchain is retrievable alongside the signed register.",
+        "Fix, mechanical: the gate gained toolchain completeness as its first check (now 6 checks) — every required toolchain file must exist beside the gate before anything else runs, so an incomplete published set fails its own gate.",
+        "Repo layout decision recorded: one toolchain directory plus the current signed register and envelope, with version history in git; per-version folders were a drafting workflow, not the distribution shape. Every published set ships with a MANIFEST.sha384 covering all distributed files."
+      ]
+    },
+    {
+      "version": "0.9.9",
+      "date": "2026-07-07",
+      "changes": [
+        "Distribution-integrity finding (independent review): 0.9.8 shipped a MANIFEST.sha384 listing six test-fixtures/* files that were never copied into the distribution — shasum -c failed (12 OK / 6 FAILED) on a set whose own gate passed, one version after fixing fails-its-own-gate. Fix: the fixtures now ship (cbom-pass/fail/unclassified, lint-clean/lint-dirty — the gate's committed regression suite), and the gate's toolchain-completeness check verifies the manifest cryptographically: every listed file must exist with a matching SHA-384, the required toolchain files must be listed, and a missing or unparseable manifest fails the gate. File existence alone is no longer accepted as completeness.",
+        "Finalized into the product repository: trust/pq-register/ in the Bee monorepo is the single distribution directory (register, envelope, toolchain, fixtures, manifest); version history lives in git; the QNSP docs/bee-integration-v1..v7 drafting folders are preserved in QNSP git history and removed from the working tree. The release gate is wired into Bee's quality pipeline (trust:gate) per PG-8."
+      ]
+    }
+  ]
+}

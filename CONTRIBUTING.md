@@ -1,32 +1,24 @@
-# Contributing to bee-community
+# Contributing to Bee Public
 
-Thanks for picking up a thread on the public side of Bee. This repo collects examples, MCP install material, and SDK pointers — small, reviewable changes welcome.
+Thank you for improving Bee's public developer surface. Small, reviewable changes to SDKs, MCP integration, examples, contracts, and documentation are welcome.
 
-## Where to file what
+## Before opening a pull request
 
-| Issue | File it here? |
-|---|---|
-| SDK bug (`@heossi/bee` or `bee-sdk`) | ✅ yes — open an issue with a minimal reproduction |
-| MCP server bug or missing client config | ✅ yes |
-| New example you'd like to contribute | ✅ yes — open a PR straight away |
-| Bee engine bug, model output issue, billing question | ❌ no — use [bee.heossi.com/contact](https://bee.heossi.com/contact) |
-| Security disclosure | ❌ not in public — email `bee-security@cuilabs.io` |
+1. Search existing issues and releases.
+2. Include a minimal reproduction for defects.
+3. Add or update tests for SDK behavior.
+4. Keep examples runnable and free of secrets, placeholders, and fabricated output.
+5. Run the relevant package checks documented in its README.
 
-## Pull requests
+The SDK and generated contract trees have canonical sources in HEOSSI's Bee monorepo. A maintainer will reconcile accepted public contributions back to that source before the next export so changes are not overwritten.
 
-1. Fork + branch from `main`.
-2. Keep diffs small. Examples should be ≤ ~150 lines and runnable as-is.
-3. Match existing tone in the example files — minimal comments, real working code, honest error messages.
-4. PR description should answer: *what does this example demonstrate, and what does it deliberately leave out?*
+## Scope
 
-## Honest-code expectations
+| Request | Correct channel |
+| --- | --- |
+| SDK, MCP, API-contract, or example defect | GitHub issue |
+| Documentation correction | GitHub issue or pull request |
+| Product output, account, or billing support | [Bee support](https://bee.heossi.com/contact?category=support) |
+| Security vulnerability | `bee-security@heossi.com`; do not open a public issue |
 
-We mirror the same rule the main Bee repo runs on:
-
-> If a feature is shown in code or claimed in copy, it must actually work. No `TODO` / `FIXME` / `Math.random()` placeholder data, no fake function-calling examples, no "coming soon" labels unless the date is real.
-
-Examples that depend on a feature that's still in flight should be tagged with the relevant [roadmap](https://bee.heossi.com/roadmap) stage and a clear status banner at the top of the file.
-
-## License
-
-By contributing, you agree your contribution is licensed under the [Apache-2.0](./LICENSE) of this repo.
+By contributing, you agree that your contribution is licensed under Apache-2.0 and that you have the right to submit it.

@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling>=1.29.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bee-sdk"
+version = "0.6.9"
+description = "Bee by HEOSSI - The Progressive Quantum-Native Intelligence Engine"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "HEOSSI (Pte.) Ltd.", email = "bee-support@heossi.com" },
+]
+keywords = [
+    "bee",
+    "llm",
+    "ai",
+    "lora",
+    "domain-experts",
+    "quantum",
+    "cybersecurity",
+    "blockchain",
+    "mcp",
+    "huggingface",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = []
+
+# `bee-mcp` is a Model Context Protocol server (stdio) that forwards tool
+# calls to the hosted Bee gateway. Pure stdlib + this SDK - no extra deps.
+[project.scripts]
+bee-mcp = "bee_sdk.mcp:main"
+
+[project.optional-dependencies]
+async = ["httpx>=0.28.1"]
+dev = [
+    "pytest>=9.0.3",
+    "pytest-asyncio>=1.3.0",
+    "ruff>=0.15.13",
+    "mypy>=2.1.0",
+    "httpx>=0.28.1",
+]
+
+[project.urls]
+Homepage = "https://bee.heossi.com"
+Documentation = "https://bee.heossi.com/docs/sdks"
+Repository = "https://github.com/heossihq/bee-public"
+Issues = "https://github.com/heossihq/bee-public/issues"
+Changelog = "https://bee.heossi.com/changelog"
+"Hugging Face" = "https://huggingface.co/heossi"
+
+[tool.hatch.build.targets.wheel]
+packages = ["bee_sdk"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "bee_sdk/",
+    "README.md",
+    "pyproject.toml",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unused_ignores = true
