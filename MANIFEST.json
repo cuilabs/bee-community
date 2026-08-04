@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "repository": "heossihq/bee-public",
-  "generatedAt": "2026-08-04T11:29:33Z",
+  "generatedAt": "2026-08-04T12:10:54Z",
   "source": {
     "repository": "heossihq/bee",
-    "commit": "11a83f5ed7172fecd9f14a0c2efc16b38ae4f997",
-    "contentDigest": "14e5a31342684d7b7e435a26c7303ad8c1c14237f89858e2e3b3fa123ac0f33a"
+    "commit": "07e767e2dea8692c966a5b63a6f15d4e47fd9dba",
+    "contentDigest": "dd04264b5a232e96576f1c25f134c7050256de197e48d19556dcef79ff660d61"
   },
   "packages": {
     "typescript": "0.1.9",
@@ -26,10 +26,6 @@
       "sha256": "e5e7e6ba062d8488006ba4ae6c29c6d27a027454c02e6fd9d3c1ff6a2580e33a"
     },
     {
-      "path": ".mailmap",
-      "sha256": "178f9539b3495233372be4c48d58a8c974d3251bced20fee08d3c53a6391311e"
-    },
-    {
       "path": "CODE_OF_CONDUCT.md",
       "sha256": "533de5f355e65ef1635fe540f1cea572440022dc79f6b5509fbd5a7fff57b279"
     },
@@ -47,7 +43,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "cbf64e91dc0707f621810355fa1a3a4598dd68f42713f0d006fc390968f55902"
+      "sha256": "27e4967a33db70a7ead3b71c72d914dff4f1fc9c3801665df80345c7375b1e20"
     },
     {
       "path": "SECURITY.md",
@@ -68,6 +64,26 @@
     {
       "path": "assets/bee-logo-400.png",
       "sha256": "c0d56bbe82093d73919f2711392861fe5f094f5241b99a99d4147e30a54fb3a3"
+    },
+    {
+      "path": "docs/architecture.md",
+      "sha256": "a790c4e75dbed2b8ea4552074b431290714723beaedcb90ca8f65dafafabed76"
+    },
+    {
+      "path": "docs/scenarios/README.md",
+      "sha256": "fb5bdb9a3fcfa582a84cf1a3686b54870bb8794b358c27f7128d4ebee512c82f"
+    },
+    {
+      "path": "docs/scenarios/bee-code.md",
+      "sha256": "5ee5d093ddea1e260476eb7f45dddb0685f8061bf72f394d2117b56e81d201ad"
+    },
+    {
+      "path": "docs/scenarios/quantum-reasoning.md",
+      "sha256": "8f3edca95fc864843d620bcafbe2c216a1b31605b64bd02b6fcbd9ae66781744"
+    },
+    {
+      "path": "docs/scenarios/tenant-rag.md",
+      "sha256": "31fbc0f03aa874a8a10165a0087bf0a6e99d3ef122cc66b67754b7e4202fca7f"
     },
     {
       "path": "examples/python/quickstart.py",

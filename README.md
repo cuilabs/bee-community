@@ -45,12 +45,25 @@ Create an API key in [Bee Workspace](https://workspace.bee.heossi.com/account/ap
 
 ```text
 api/                 Versioned OpenAPI and Postman contracts
+docs/                Public architecture and enterprise scenario flows
 examples/            Runnable TypeScript and Python examples
 mcp/                 Client configuration and MCP setup
 sdks/typescript/     Published @heossihq/bee package source and tests
 sdks/python/         Published bee-sdk and bee-mcp source and tests
 trust/pq-register/   Public PQ coverage register and offline verification tools
 ```
+
+## Architecture and scenarios
+
+Start with the [public reference architecture](./docs/architecture.md), then
+follow the control boundary through three concrete flows:
+
+- [governed coding in an IDE](./docs/scenarios/bee-code.md)
+- [tenant-scoped knowledge retrieval](./docs/scenarios/tenant-rag.md)
+- [explicit quantum reasoning](./docs/scenarios/quantum-reasoning.md)
+
+The matching visual architecture centre is published at
+[bee.heossi.com/docs/architecture](https://bee.heossi.com/docs/architecture).
 
 ## Public and proprietary boundary
 
