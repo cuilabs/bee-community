@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "repository": "heossihq/bee-public",
-  "generatedAt": "2026-08-05T11:02:59Z",
+  "generatedAt": "2026-08-05T11:27:17Z",
   "source": {
     "repository": "heossihq/bee",
-    "commit": "d8b8c0c411a941419093edae316628bee11e7a9c",
-    "contentDigest": "f66eb64b269cd0f76412310c467754776ff2a14511dc6f00cf4f5535a1bb4027"
+    "commit": "007c2bc4a3b30fc7aaf75ac56ced5c03c29fa3d7",
+    "contentDigest": "42a3d910d1a936b495f164c3717e4d30cea8ab31883615935236e948afcf0324"
   },
   "packages": {
     "typescript": "0.1.9",
@@ -55,7 +55,7 @@
     },
     {
       "path": "SHA256SUMS",
-      "sha256": "b77c7e9a5d32db35d7a754c4c74c419867c21908294277c825a0c033cbeee82e"
+      "sha256": "791cb529ccab57f0f767e14994dd77efc6aa4f5e06355cf64470b3f8f46e2d78"
     },
     {
       "path": "SUPPORT.md",
@@ -74,12 +74,16 @@
       "sha256": "c0d56bbe82093d73919f2711392861fe5f094f5241b99a99d4147e30a54fb3a3"
     },
     {
-      "path": "assets/bee-public-social-preview.png",
-      "sha256": "e4c4cbf66b9fee9882ba48df0bf517a8459075fe418d902ce23e90f1ecfd5b2f"
+      "path": "assets/bee-logo-official.png",
+      "sha256": "8caccb286b74398ba9b7d71d311dd8e7ff9097af58a727a28222236d3ad455c2"
     },
     {
-      "path": "assets/bee-public-social-preview.svg",
-      "sha256": "63d7d6411e3040d4f5b934f8769d56eda4971bc81ff167b737972b51d2a0e910"
+      "path": "assets/bee-public-social-preview.png",
+      "sha256": "0ed02ccc956859506261234163da9ec5df8014bc796b62b1f25589f58145ec09"
+    },
+    {
+      "path": "assets/heossi-logo-official.png",
+      "sha256": "fb0dfb66596dccdc2508dae665eb998935d175053c17e907297c979878a3a8a5"
     },
     {
       "path": "docs/architecture.md",
