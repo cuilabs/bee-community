@@ -9,7 +9,7 @@
 
 The public developer distribution for [Bee](https://bee.heossi.com), HEOSSI's governed multimodal intelligence platform. This repository contains the actual source of Bee's Apache-2.0 SDKs, MCP integration, API contracts, runnable examples, and public trust-verification material.
 
-> This repository is generated from reviewed, public-safe paths in the Bee monorepo. [MANIFEST.json](./MANIFEST.json) records the exact source commit and content digest for every export.
+> This repository is generated from reviewed, public-safe paths in the Bee monorepo. [MANIFEST.json](./MANIFEST.json) records the exact source commit and content digest for every export; [SHA256SUMS](./SHA256SUMS) and the [SPDX SBOM](./SBOM.spdx.json) support independent artifact inspection.
 
 <!-- mcp-name: io.github.heossihq/bee-public -->
 
@@ -53,6 +53,15 @@ sdks/python/         Published bee-sdk and bee-mcp source and tests
 trust/pq-register/   Public PQ coverage register and offline verification tools
 ```
 
+## Enterprise evaluation paths
+
+| Evaluator | Start here | What can be verified publicly |
+| --- | --- | --- |
+| Enterprise architect | [Reference architecture](./docs/architecture.md) and [scenario flows](./docs/scenarios/README.md) | System boundaries, governed request flow, deployment profiles, and responsibility split |
+| Security or risk lead | [Security policy](./SECURITY.md), [PQ coverage register](./trust/pq-register/), and [diligence index](./docs/enterprise-diligence.md) | Disclosure path, released PQ claims, evidence limitations, and public control references |
+| Platform engineer | [API contracts](./api/), [SDKs](./sdks/), [MCP](./mcp/), and [examples](./examples/) | Integration contracts, install paths, source, examples, and client configuration |
+| Procurement or technical diligence | [MANIFEST.json](./MANIFEST.json), [SHA256SUMS](./SHA256SUMS), [SPDX SBOM](./SBOM.spdx.json), and [NOTICE](./NOTICE) | Export provenance, file integrity, package inventory, licensing, and the public/proprietary boundary |
+
 ## Architecture and scenarios
 
 Start with the [public reference architecture](./docs/architecture.md), then
@@ -64,6 +73,21 @@ follow the control boundary through three concrete flows:
 
 The matching visual architecture centre is published at
 [bee.heossi.com/docs/architecture](https://bee.heossi.com/docs/architecture).
+
+## Integrity and provenance
+
+The public distribution is locally rendered from an allowlisted monorepo
+surface. Verify it with:
+
+```bash
+sha256sum --check SHA256SUMS
+```
+
+`SHA256SUMS` covers every exported payload file except itself and the
+commit-specific `MANIFEST.json`. The manifest separately binds the export to
+its source commit and contains a deterministic digest of the complete payload.
+The SPDX document is package-level (`filesAnalyzed: false`); it inventories the
+published SDK and MCP packages without claiming a binary or deployment SBOM.
 
 ## Public and proprietary boundary
 

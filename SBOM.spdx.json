@@ -1,0 +1,95 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "name": "Bee Public Developer Distribution",
+  "documentNamespace": "https://bee.heossi.com/sbom/bee-public/ts-0.1.9_py-0.6.9_mcp-0.6.9",
+  "creationInfo": {
+    "creators": [
+      "Organization: HEOSSI (Pte.) Ltd."
+    ],
+    "created": "2026-08-05T00:00:00Z"
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-Bee-Public",
+      "name": "Bee Public Developer Distribution",
+      "versionInfo": "0.6.9",
+      "supplier": "Organization: HEOSSI (Pte.) Ltd.",
+      "downloadLocation": "https://github.com/heossihq/bee-public",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "Copyright 2026 HEOSSI (Pte.) Ltd."
+    },
+    {
+      "SPDXID": "SPDXRef-Package-TypeScript-SDK",
+      "name": "@heossihq/bee",
+      "versionInfo": "0.1.9",
+      "supplier": "Organization: HEOSSI (Pte.) Ltd.",
+      "downloadLocation": "https://www.npmjs.com/package/@heossihq/bee",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "Copyright 2026 HEOSSI (Pte.) Ltd.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40heossihq/bee@0.1.9"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-Python-SDK",
+      "name": "bee-sdk",
+      "versionInfo": "0.6.9",
+      "supplier": "Organization: HEOSSI (Pte.) Ltd.",
+      "downloadLocation": "https://pypi.org/project/bee-sdk/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "Copyright 2026 HEOSSI (Pte.) Ltd.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:pypi/bee-sdk@0.6.9"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-MCP",
+      "name": "bee-mcp",
+      "versionInfo": "0.6.9",
+      "supplier": "Organization: HEOSSI (Pte.) Ltd.",
+      "downloadLocation": "https://registry.modelcontextprotocol.io/v0/servers?search=io.github.heossihq/bee-public",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "Copyright 2026 HEOSSI (Pte.) Ltd."
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-Bee-Public"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-Bee-Public",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-Package-TypeScript-SDK"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-Bee-Public",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-Package-Python-SDK"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-Bee-Public",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-Package-MCP"
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "repository": "heossihq/bee-public",
-  "generatedAt": "2026-08-04T12:10:54Z",
+  "generatedAt": "2026-08-05T11:02:59Z",
   "source": {
     "repository": "heossihq/bee",
-    "commit": "07e767e2dea8692c966a5b63a6f15d4e47fd9dba",
-    "contentDigest": "dd04264b5a232e96576f1c25f134c7050256de197e48d19556dcef79ff660d61"
+    "commit": "d8b8c0c411a941419093edae316628bee11e7a9c",
+    "contentDigest": "f66eb64b269cd0f76412310c467754776ff2a14511dc6f00cf4f5535a1bb4027"
   },
   "packages": {
     "typescript": "0.1.9",
@@ -43,11 +43,19 @@
     },
     {
       "path": "README.md",
-      "sha256": "27e4967a33db70a7ead3b71c72d914dff4f1fc9c3801665df80345c7375b1e20"
+      "sha256": "c20dfe19b9c25025e0b43994451faabf26dd8dc6817f7136d19a81e39848dd87"
+    },
+    {
+      "path": "SBOM.spdx.json",
+      "sha256": "216fa18a5b211bbef46aac31f9a978ccba68d05bc13063d47bcfe69af1bd1166"
     },
     {
       "path": "SECURITY.md",
       "sha256": "3b40c1c8cc7048d9d803b6f57d536d5c6a6e37bea4e3998b0837afe0ba327826"
+    },
+    {
+      "path": "SHA256SUMS",
+      "sha256": "b77c7e9a5d32db35d7a754c4c74c419867c21908294277c825a0c033cbeee82e"
     },
     {
       "path": "SUPPORT.md",
@@ -66,8 +74,20 @@
       "sha256": "c0d56bbe82093d73919f2711392861fe5f094f5241b99a99d4147e30a54fb3a3"
     },
     {
+      "path": "assets/bee-public-social-preview.png",
+      "sha256": "e4c4cbf66b9fee9882ba48df0bf517a8459075fe418d902ce23e90f1ecfd5b2f"
+    },
+    {
+      "path": "assets/bee-public-social-preview.svg",
+      "sha256": "63d7d6411e3040d4f5b934f8769d56eda4971bc81ff167b737972b51d2a0e910"
+    },
+    {
       "path": "docs/architecture.md",
       "sha256": "a790c4e75dbed2b8ea4552074b431290714723beaedcb90ca8f65dafafabed76"
+    },
+    {
+      "path": "docs/enterprise-diligence.md",
+      "sha256": "707f62ad2b1108ca3e791f241cba371b34175f46096052f8b5fad34e259b0e94"
     },
     {
       "path": "docs/scenarios/README.md",
@@ -75,7 +95,7 @@
     },
     {
       "path": "docs/scenarios/bee-code.md",
-      "sha256": "5ee5d093ddea1e260476eb7f45dddb0685f8061bf72f394d2117b56e81d201ad"
+      "sha256": "00a2a33a140332627b6d40317d2cd34f66efab05fb716a5780aae151678cf18e"
     },
     {
       "path": "docs/scenarios/quantum-reasoning.md",
