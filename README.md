@@ -21,7 +21,7 @@ The public developer distribution for [Bee](https://bee.heossi.com), HEOSSI's go
 | Python SDK | `pip install bee-sdk` | [`sdks/python`](./sdks/python) |
 | MCP server | `uvx --from bee-sdk@latest bee-mcp` | [`mcp`](./mcp) · [`server.json`](./sdks/python/server.json) |
 | OpenAI-compatible API | `https://api.bee.heossi.com/bee` | [`openapi.json`](./api/openapi.json) · [`postman.json`](./api/postman.json) |
-| BEE Code for VS Code | Open VSX: `heossihq.beecode` | [Install](https://open-vsx.org/extension/heossihq/beecode) |
+| BEE Code for VS Code | Open VSX: `Heossi.beecode` | [Install](https://open-vsx.org/extension/Heossi/beecode) |
 | Bee Code CLI | `npm install -g @heossihq/beecode` | [Download guide](https://bee.heossi.com/download) |
 | PQ assurance | Signed public coverage register | [`trust/pq-register`](./trust/pq-register) |
 
