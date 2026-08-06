@@ -29,6 +29,7 @@ from typing import Any
 from .types import (
     ChatMessage,
     ChatResponse,
+    CustomerModelId,
     Domain,
     QuantumProductId,
     QuantumReasoningJob,
@@ -52,7 +53,7 @@ RETRYABLE_STATUS = {429, 500, 502, 503, 504}
 DEFAULT_MODEL = "bee-cell"
 
 
-def _resolve_model(model: str | None) -> str:
+def _resolve_model(model: CustomerModelId | None) -> str:
     return model or os.environ.get("BEE_MODEL") or DEFAULT_MODEL
 
 
@@ -105,7 +106,7 @@ class _BaseClient:
         h = {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "User-Agent": "bee-sdk/0.6.9",
+            "User-Agent": "bee-sdk/0.6.10",
         }
         if self.api_key:
             h["Authorization"] = f"Bearer {self.api_key}"
@@ -181,7 +182,7 @@ class Bee(_BaseClient):
         max_tokens: int = 512,
         temperature: float = 0.3,
         system: str | None = None,
-        model: str | None = None,
+        model: CustomerModelId | None = None,
     ) -> str:
         """Single-turn chat. Returns the assistant text only.
 
@@ -207,7 +208,7 @@ class Bee(_BaseClient):
         domain: Domain | None = None,
         max_tokens: int = 512,
         temperature: float = 0.3,
-        model: str | None = None,
+        model: CustomerModelId | None = None,
     ) -> ChatResponse:
         body = {
             "model": _resolve_model(model),
@@ -239,7 +240,7 @@ class Bee(_BaseClient):
         max_tokens: int = 512,
         temperature: float = 0.3,
         system: str | None = None,
-        model: str | None = None,
+        model: CustomerModelId | None = None,
     ) -> Iterator[str]:
         """Stream tokens as they're generated.
 
@@ -507,7 +508,7 @@ class AsyncBee(_BaseClient):
         max_tokens: int = 512,
         temperature: float = 0.3,
         system: str | None = None,
-        model: str | None = None,
+        model: CustomerModelId | None = None,
     ) -> str:
         msgs: list[dict] = []
         if system:
@@ -537,7 +538,7 @@ class AsyncBee(_BaseClient):
         max_tokens: int = 512,
         temperature: float = 0.3,
         system: str | None = None,
-        model: str | None = None,
+        model: CustomerModelId | None = None,
     ) -> AsyncIterator[str]:
         msgs: list[dict] = []
         if system:

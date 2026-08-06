@@ -5,7 +5,7 @@ Official TypeScript / JavaScript SDK for **Bee by HEOSSI - The Progressive Quant
 [![npm](https://img.shields.io/npm/v/@heossihq/bee.svg)](https://www.npmjs.com/package/@heossihq/bee)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 
-Bee exposes an **OpenAI-compatible** `/chat/completions` surface backed by a domain-specialised LoRA-routed model ladder - Cell, Brood, Comb, Buzz, Hive, Swarm, Enclave. This SDK is the typed entry point.
+Bee exposes an **OpenAI-compatible** `/chat/completions` surface backed by a governed six-model ladder - Cell, Brood, Comb, Buzz, Hive, and Swarm. Enclave is a private deployment mode, not a seventh selectable model. This SDK is the typed entry point.
 
 - ✅ Pure ESM, zero runtime dependencies
 - ✅ Native `fetch` (Node 18+, Deno, Bun, every browser)
@@ -61,7 +61,7 @@ for await (const chunk of stream) {
 }
 ```
 
-## Vision (Hive / Swarm / Enclave tiers)
+## Vision (Cell through Swarm)
 
 ```ts
 const out = await bee.chat.completions.create({

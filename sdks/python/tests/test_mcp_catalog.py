@@ -1,8 +1,10 @@
 """Contract tests for the public MCP catalog used by registries and Glama."""
 
 import unittest
+from typing import get_args
 
-from bee_sdk.mcp import DOMAINS, RESOURCE_TEMPLATES, RESOURCES, TOOLS
+from bee_sdk.mcp import DOMAINS, MODELS, RESOURCE_TEMPLATES, RESOURCES, TOOLS
+from bee_sdk.types import CustomerModelId
 
 EXPECTED_TOOLS = [
     "bee_chat",
@@ -37,6 +39,19 @@ EXPECTED_MCP_DOMAINS = [
 
 
 class MCPCatalogTest(unittest.TestCase):
+    def test_model_catalog_matches_the_public_sdk_request_type(self) -> None:
+        expected = [
+            "bee-cell",
+            "bee-brood",
+            "bee-comb",
+            "bee-buzz",
+            "bee-hive",
+            "bee-swarm",
+        ]
+        self.assertEqual(MODELS, expected)
+        self.assertEqual(list(get_args(CustomerModelId)), expected)
+        self.assertEqual(TOOLS[0]["inputSchema"]["properties"]["model"]["enum"], expected)
+
     def test_domain_catalog_matches_the_hosted_curated_surface(self) -> None:
         self.assertEqual(DOMAINS, EXPECTED_MCP_DOMAINS)
         self.assertEqual(TOOLS[0]["inputSchema"]["properties"]["domain"]["enum"], EXPECTED_MCP_DOMAINS)

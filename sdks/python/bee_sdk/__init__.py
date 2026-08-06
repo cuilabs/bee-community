@@ -37,6 +37,7 @@ from .quantum_local import QuantumLocalResult, execute_byopa_direct, quantum_loc
 from .types import (
     ChatMessage,
     ChatResponse,
+    CustomerModelId,
     Domain,
     DomainIntelligenceMetadata,
     ModelTier,
@@ -51,7 +52,7 @@ from .types import (
     QuantumReasoningRealRequestStatus,
 )
 
-__version__ = "0.6.9"
+__version__ = "0.6.10"
 __all__ = [
     "Bee",
     "AsyncBee",
@@ -61,6 +62,7 @@ __all__ = [
     "BeeActionRequiredError",
     "ChatMessage",
     "ChatResponse",
+    "CustomerModelId",
     "Domain",
     "DomainIntelligenceMetadata",
     "ModelTier",

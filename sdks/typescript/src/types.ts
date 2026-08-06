@@ -44,6 +44,15 @@ export type ImageUrlPart = {
 };
 export type ContentPart = TextPart | ImageUrlPart;
 
+/** Customer-selectable production model tiers. Access is enforced by the API key's plan. */
+export type BeeModelId =
+  | "bee-cell"
+  | "bee-brood"
+  | "bee-comb"
+  | "bee-buzz"
+  | "bee-hive"
+  | "bee-swarm";
+
 export interface ChatMessage {
   role: Role;
   /** A plain string OR an OpenAI-style multimodal content array. */
@@ -51,8 +60,8 @@ export interface ChatMessage {
 }
 
 export interface ChatCompletionCreateParams {
-  /** Bee tier id - `bee-cell`, `bee-brood`, `bee-comb`, `bee-buzz`, `bee-hive`, `bee-swarm`, `bee-enclave`. Default `bee-cell`. */
-  model?: string;
+  /** Customer-selectable Bee tier. Default `bee-cell`. */
+  model?: BeeModelId;
   /** Optional governed Tier-1 specialist. Omit to use Bee's automatic classifier. */
   domain?: BeeDomain;
   messages: ChatMessage[];

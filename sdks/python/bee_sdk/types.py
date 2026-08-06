@@ -142,7 +142,18 @@ Domain = Literal[
     "physics",
 ]
 
-# Trainable tier names, mirror of bee/tiers.py.
+# Customer-selectable production model ids accepted by the public API.
+CustomerModelId = Literal[
+    "bee-cell",
+    "bee-brood",
+    "bee-comb",
+    "bee-buzz",
+    "bee-hive",
+    "bee-swarm",
+]
+
+# Internal trainable/deployment family names, mirror of bee/tiers.py. This is
+# not the public request model field; use CustomerModelId for API calls.
 ModelTier = Literal["cell", "brood", "comb", "buzz", "hive", "swarm", "enclave", "ignite"]
 
 

@@ -3,8 +3,9 @@
  * Bee by HEOSSI - The Progressive Quantum-Native Intelligence Engine.
  *
  * Bee exposes an OpenAI-compatible /chat/completions surface backed by a
- * domain-specialised LoRA-routed model ladder (Cell, Brood, Comb, Buzz,
- * Hive, Swarm, Enclave). This SDK is the typed entry point - pure
+ * governed model ladder (Cell, Brood, Comb, Buzz, Hive, Swarm).
+ * Enclave is a private deployment mode, not a selectable seventh model.
+ * This SDK is the typed entry point - pure
  * ESM, zero runtime dependencies, native fetch.
  *
  * See https://bee.heossi.com/docs for the full API reference.
@@ -29,6 +30,7 @@ export type {
 export { executeByopaDirect, quantumLocalSelect } from "./quantum-local.js";
 export type {
   BeeDomain,
+  BeeModelId,
   BeeUpgradeAction,
   BeeUpgradeDecision,
   BeeUpgradeReason,

@@ -54,9 +54,9 @@ except Exception:  # not installed (running from source) - fall back
 # fallback when the client omits it.
 DEFAULT_PROTOCOL_VERSION = "2024-11-05"
 
-# Production model tiers - mirror of bee_sdk.types.ModelTier (customer-
-# selectable ladder; enclave/ignite are not public-selectable). Which tiers a
-# key may use is decided by its plan at the gateway; bee-cell is the free tier.
+# Public request model ids - mirror of bee_sdk.types.CustomerModelId. Enclave is
+# a deployment mode and Ignite is a research programme, so neither is a public
+# request model. The gateway enforces the API key's exact plan entitlement.
 MODELS = [
     "bee-cell",
     "bee-brood",
