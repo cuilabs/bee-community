@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "repository": "heossihq/bee-public",
-  "generatedAt": "2026-08-05T18:15:47Z",
+  "generatedAt": "2026-08-06T06:53:08Z",
   "source": {
     "repository": "heossihq/bee",
-    "commit": "450a88488916e6c8f9f176e70f0bce2f6c4cd849",
-    "contentDigest": "30fc453fb167e4c2bd4b62a7b797691ce8ae6583879dbba8d3b9acda90d96ca0"
+    "commit": "e4968b0c0b34246f91cd00586196d491a7c1cb1a",
+    "contentDigest": "92499985d13a00055b6196971935c23884cf6d348d3c882c3e8218a1e53b3a00"
   },
   "packages": {
     "typescript": "0.1.9",
@@ -55,7 +55,7 @@
     },
     {
       "path": "SHA256SUMS",
-      "sha256": "0002ddd987bc58ac1127797ec84459341029518a178fae479afeeb8ab12bab38"
+      "sha256": "58a3c01435bd4aae6563a3867bb8fc3822a410ef37b7676f18dfffd7df70f920"
     },
     {
       "path": "SUPPORT.md",
@@ -84,6 +84,14 @@
     {
       "path": "assets/heossi-logo-official.png",
       "sha256": "fb0dfb66596dccdc2508dae665eb998935d175053c17e907297c979878a3a8a5"
+    },
+    {
+      "path": "assets/vscode/bee-code-controls.png",
+      "sha256": "dbfaf51866fce676b47b18cf449bad1af1a7ade89fd7493f9aee34afed5e19fc"
+    },
+    {
+      "path": "assets/vscode/bee-code-session.png",
+      "sha256": "bf4dfea8ff019e2304f3f82e6429b49272dda58cbd071f49bf53e938ec24e5d7"
     },
     {
       "path": "docs/architecture.md",
