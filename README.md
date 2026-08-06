@@ -78,6 +78,11 @@ follow the control boundary through three concrete flows:
 The matching visual architecture centre is published at
 [bee.heossi.com/docs/architecture](https://bee.heossi.com/docs/architecture).
 
+Bee Code's agent path is durable, subscription-bounded, and independently
+metered. Workspace, mobile, desktop, SDK, and MCP requests retain their own
+documented execution contracts; common entitlement enforcement does not imply
+that every surface has local IDE tools.
+
 ## Integrity and provenance
 
 The public distribution is locally rendered from an allowlisted monorepo

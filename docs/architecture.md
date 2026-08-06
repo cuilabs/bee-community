@@ -29,6 +29,12 @@ The public browser, SDK, MCP, and editor clients do not call inference workers
 directly. The authenticated gateway resolves the account, tenant, model access,
 rate and applicable policy before selecting an eligible execution path.
 
+Bee Code for VS Code and the Bee Code CLI use the durable agent route. Workspace,
+mobile, and desktop use the Workspace chat and product routes. SDK and MCP calls
+perform only their documented API operation; they do not implicitly start an
+IDE agent run. These surfaces share subscription authority, not identical local
+capabilities.
+
 ## Governed request lifecycle
 
 ```mermaid
@@ -84,3 +90,6 @@ verifiable coverage claims released for inspection.
 - It does not make customer-scoped Enclave controls universally available.
 - It does not expose or license Bee's proprietary orchestration or model-engine
   source.
+- It does not imply that every client can edit files, control a browser, or use
+  an MCP tool. Local effects require a supporting client, an installed tool, and
+  explicit approval.

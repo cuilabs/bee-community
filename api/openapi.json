@@ -198,6 +198,11 @@
                   "session_id": {
                     "type": "string"
                   },
+                  "run_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Stable durable run identifier across every manager/tool cycle for one customer task."
+                  },
                   "turn_id": {
                     "type": "string"
                   },
@@ -241,11 +246,50 @@
                   "request": {
                     "type": "string"
                   },
+                  "cursor": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
                   "workspace": {
                     "type": "object"
                   },
                   "transcript": {
                     "type": "array"
+                  },
+                  "client_tools": {
+                    "type": "array",
+                    "maxItems": 64,
+                    "description": "Bounded tools registered in the calling VS Code host, including MCP tools. Every invocation remains locally validated and approval-gated.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "description",
+                        "input_schema",
+                        "tags"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "maxLength": 200
+                        },
+                        "description": {
+                          "type": "string",
+                          "maxLength": 1000
+                        },
+                        "input_schema": {
+                          "type": "object"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "maxItems": 16,
+                          "items": {
+                            "type": "string",
+                            "maxLength": 100
+                          }
+                        }
+                      }
+                    }
                   },
                   "capabilities": {
                     "type": "object"
@@ -272,8 +316,74 @@
           "401": {
             "description": "Missing or invalid API credential"
           },
+          "402": {
+            "description": "Hard plan allowance reached; upgrade required"
+          },
+          "403": {
+            "description": "Model, scope, or authorised-security requirement denied"
+          },
           "429": {
             "description": "Allowance or rate limit reached"
+          },
+          "503": {
+            "description": "Entitled runtime or durable run store unavailable"
+          }
+        }
+      }
+    },
+    "/bee/agents/runs/{runId}": {
+      "get": {
+        "operationId": "getBeeAgentRun",
+        "summary": "Inspect one authenticated Bee agent run",
+        "parameters": [
+          {
+            "name": "runId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account-scoped run status and bounded usage"
+          },
+          "401": {
+            "description": "Missing or invalid API credential"
+          },
+          "404": {
+            "description": "Run not found for this account"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "cancelBeeAgentRun",
+        "summary": "Cancel one running authenticated Bee agent run",
+        "parameters": [
+          {
+            "name": "runId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Run cancellation accepted"
+          },
+          "401": {
+            "description": "Missing or invalid API credential"
+          },
+          "404": {
+            "description": "Run not found for this account"
+          },
+          "409": {
+            "description": "Run is already terminal"
           }
         }
       }

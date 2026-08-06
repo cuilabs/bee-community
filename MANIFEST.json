@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
   "repository": "heossihq/bee-public",
-  "generatedAt": "2026-08-06T22:06:57Z",
+  "generatedAt": "2026-08-06T23:46:15Z",
   "source": {
     "repository": "heossihq/bee",
-    "commit": "1c6ebefa8eb6a9f9b924a41e7743a153757bd45b",
-    "contentDigest": "e51dfb9199717e3b5379e878a1270e6838613b745edbefb7842e7c7227398be9"
+    "commit": "682b9a19d25df8e0766d4372d1a0c69fe96aefa0",
+    "contentDigest": "b0997907a024dd6ba01a00ea4eea8833c00eae450dcf0cc78f432c6f0bb491fc"
   },
   "packages": {
     "typescript": "0.2.0",
     "python": "0.6.10",
     "mcp": "0.6.10",
-    "codeCli": "0.1.3",
+    "codeCli": "0.1.4",
     "vscodeExtension": "0.2.10"
   },
   "files": [
@@ -45,15 +45,15 @@
     },
     {
       "path": "PACKAGE-INDEX.json",
-      "sha256": "93cbf68635f3166f4b1eed097461dd0fbef2dd7590a345772a202a9af2039874"
+      "sha256": "9911fa85b8f1061c089045621fd5a348dd6b23cfb99ee88aaa3e8df4209e54f9"
     },
     {
       "path": "PACKAGES.md",
-      "sha256": "b74ee458639e651db2f4c2c32627605696cf40a2dd8c4447c9b1046eec37ef5e"
+      "sha256": "810fa371aa1b6fbfc0dbd9798c03d86bb49c4f1730b54d3b4d6f8e07ec69b23b"
     },
     {
       "path": "README.md",
-      "sha256": "f20b9e907d40628dafa4e7f89bc7c6a9024686f64119c5d42b8cae184505cc01"
+      "sha256": "af009845ddc8cd64d568498ef2e26b4e4c8d378565413e403b325ab5aaaaa33f"
     },
     {
       "path": "SBOM.spdx.json",
@@ -65,7 +65,7 @@
     },
     {
       "path": "SHA256SUMS",
-      "sha256": "f7c96d5399dbc8ead027b326c437f40f456f4384c1a78fdf249eb7bd52d9cf11"
+      "sha256": "4dc048b426dfe7c05c068c3134358510dd18de36036c78fcf71fd719665962e4"
     },
     {
       "path": "SUPPORT.md",
@@ -73,7 +73,7 @@
     },
     {
       "path": "api/openapi.json",
-      "sha256": "a7fc6fab74a03b46eb483d253bda249f86a4555dca54769154540ce59d0eb8ac"
+      "sha256": "3ffa7605d6fc5d6fedfe65470cff5f9ed5a4e3ce3c7fb86b6bb0a12e3835a670"
     },
     {
       "path": "api/postman.json",
@@ -105,7 +105,7 @@
     },
     {
       "path": "docs/architecture.md",
-      "sha256": "a790c4e75dbed2b8ea4552074b431290714723beaedcb90ca8f65dafafabed76"
+      "sha256": "df4eec05114cff3488645b7ec3e60aeaed29c3651382cc5a8a58ef5a1690d820"
     },
     {
       "path": "docs/enterprise-diligence.md",
@@ -117,7 +117,7 @@
     },
     {
       "path": "docs/scenarios/bee-code.md",
-      "sha256": "00a2a33a140332627b6d40317d2cd34f66efab05fb716a5780aae151678cf18e"
+      "sha256": "de8c87fabd27d788ea74edb11089b8684a6cfbb38b7a0d2e32a693187869cf81"
     },
     {
       "path": "docs/scenarios/quantum-reasoning.md",
