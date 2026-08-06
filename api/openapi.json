@@ -202,7 +202,15 @@
                     "type": "string"
                   },
                   "model": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "bee-cell",
+                      "bee-brood",
+                      "bee-comb",
+                      "bee-buzz",
+                      "bee-hive",
+                      "bee-swarm"
+                    ]
                   },
                   "mode": {
                     "type": "string",

@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "repository": "heossihq/bee-public",
-  "generatedAt": "2026-08-06T06:53:08Z",
+  "generatedAt": "2026-08-06T07:59:08Z",
   "source": {
     "repository": "heossihq/bee",
-    "commit": "e4968b0c0b34246f91cd00586196d491a7c1cb1a",
-    "contentDigest": "92499985d13a00055b6196971935c23884cf6d348d3c882c3e8218a1e53b3a00"
+    "commit": "6b83168f479c3225ab5a0513fe60f312b872a592",
+    "contentDigest": "d82d2dd1232085663dc17ccea4801973c83f239f920e0d277bffedbc867bab9d"
   },
   "packages": {
     "typescript": "0.1.9",
@@ -55,7 +55,7 @@
     },
     {
       "path": "SHA256SUMS",
-      "sha256": "58a3c01435bd4aae6563a3867bb8fc3822a410ef37b7676f18dfffd7df70f920"
+      "sha256": "d21252ba730e2079fb7446402803a454328c3bfe0fe932f273c3c108900a9a1e"
     },
     {
       "path": "SUPPORT.md",
@@ -63,7 +63,7 @@
     },
     {
       "path": "api/openapi.json",
-      "sha256": "a9ec09bbe7806fb137cf14d2b76062e2678534c77c39d44561438a111cd2e739"
+      "sha256": "a7fc6fab74a03b46eb483d253bda249f86a4555dca54769154540ce59d0eb8ac"
     },
     {
       "path": "api/postman.json",
@@ -87,11 +87,11 @@
     },
     {
       "path": "assets/vscode/bee-code-controls.png",
-      "sha256": "dbfaf51866fce676b47b18cf449bad1af1a7ade89fd7493f9aee34afed5e19fc"
+      "sha256": "687f3c63b8175f2fd5ed35bfbe85f015c49b03176e005e29b3c8ff7c7aaf90f2"
     },
     {
       "path": "assets/vscode/bee-code-session.png",
-      "sha256": "bf4dfea8ff019e2304f3f82e6429b49272dda58cbd071f49bf53e938ec24e5d7"
+      "sha256": "c729b9b9a8f3e7ba4761d8666b30b4c5d7422afa13bc7c7efbacfc669769980d"
     },
     {
       "path": "docs/architecture.md",
