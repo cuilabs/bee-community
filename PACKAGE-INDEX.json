@@ -1,0 +1,74 @@
+{
+  "artifacts": [
+    {
+      "ecosystem": "npm",
+      "install": "npm install @heossihq/bee",
+      "license": "Apache-2.0",
+      "name": "@heossihq/bee",
+      "registryUrl": "https://www.npmjs.com/package/@heossihq/bee",
+      "role": "typescript-sdk",
+      "source": "sdks/typescript",
+      "sourceAvailability": "public",
+      "version": "0.2.0"
+    },
+    {
+      "ecosystem": "PyPI",
+      "install": "pip install bee-sdk==0.6.10",
+      "license": "Apache-2.0",
+      "name": "bee-sdk",
+      "registryUrl": "https://pypi.org/project/bee-sdk/",
+      "role": "python-sdk-and-mcp-runtime",
+      "source": "sdks/python",
+      "sourceAvailability": "public",
+      "version": "0.6.10"
+    },
+    {
+      "ecosystem": "MCP Registry",
+      "install": "uvx --from \"bee-sdk==0.6.10\" bee-mcp",
+      "license": "Apache-2.0",
+      "name": "io.github.heossihq/bee-public",
+      "registryUrl": "https://registry.modelcontextprotocol.io/v0/servers?search=io.github.heossihq/bee-public",
+      "role": "mcp-server",
+      "source": "sdks/python",
+      "sourceAvailability": "public",
+      "version": "0.6.10"
+    },
+    {
+      "ecosystem": "npm",
+      "install": "npm install -g @heossihq/beecode",
+      "license": "Proprietary",
+      "name": "@heossihq/beecode",
+      "registryUrl": "https://www.npmjs.com/package/@heossihq/beecode",
+      "role": "proprietary-code-cli",
+      "source": null,
+      "sourceAvailability": "proprietary",
+      "version": "0.1.3"
+    },
+    {
+      "ecosystem": "Visual Studio Marketplace",
+      "install": "code --install-extension Heossi.beecode",
+      "license": "Proprietary",
+      "name": "Heossi.beecode",
+      "registryUrl": "https://marketplace.visualstudio.com/items?itemName=Heossi.beecode",
+      "role": "proprietary-vscode-extension",
+      "source": null,
+      "sourceAvailability": "proprietary",
+      "version": "0.2.9"
+    },
+    {
+      "ecosystem": "Open VSX",
+      "install": "Open VSX: Heossi.beecode",
+      "license": "Proprietary",
+      "name": "Heossi.beecode",
+      "registryUrl": "https://open-vsx.org/extension/Heossi/beecode",
+      "role": "proprietary-vscode-extension",
+      "source": null,
+      "sourceAvailability": "proprietary",
+      "version": "0.2.9"
+    }
+  ],
+  "canonicalSource": "https://github.com/heossihq/bee-public",
+  "distributionPolicy": "canonical-registries",
+  "project": "Bee by HEOSSI",
+  "schemaVersion": 1
+}

@@ -7,6 +7,8 @@
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.heossihq%2Fbee--public-6f42c1)](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.heossihq/bee-public)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](./LICENSE)
 
+[Website](https://bee.heossi.com) | [Documentation](https://bee.heossi.com/docs) | [Packages](./PACKAGES.md) | [Machine-readable package index](./PACKAGE-INDEX.json) | [System status](https://bee.heossi.com/status)
+
 The public developer distribution for [Bee](https://bee.heossi.com), HEOSSI's governed multimodal intelligence platform. This repository contains the actual source of Bee's Apache-2.0 SDKs, MCP integration, API contracts, runnable examples, and public trust-verification material.
 
 > This repository is generated from reviewed, public-safe paths in the Bee monorepo. [MANIFEST.json](./MANIFEST.json) records the exact source commit and content digest for every export; [SHA256SUMS](./SHA256SUMS) and the [SPDX SBOM](./SBOM.spdx.json) support independent artifact inspection.
@@ -14,6 +16,8 @@ The public developer distribution for [Bee](https://bee.heossi.com), HEOSSI's go
 <!-- mcp-name: io.github.heossihq/bee-public -->
 
 ## Developer surface
+
+The canonical [package catalog](./PACKAGES.md) records each public developer distribution, exact version, registry, role, license boundary, and install command. Its machine-readable companion is [`PACKAGE-INDEX.json`](./PACKAGE-INDEX.json). These distributions do not expose the private Bee service monorepo.
 
 | Surface | Install or entry point | Source / contract |
 | --- | --- | --- |
@@ -81,6 +85,7 @@ surface. Verify it with:
 
 ```bash
 sha256sum --check SHA256SUMS
+python3 scripts/verify_bee_package_index.py PACKAGE-INDEX.json
 ```
 
 `SHA256SUMS` covers every exported payload file except itself and the

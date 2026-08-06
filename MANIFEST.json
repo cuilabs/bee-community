@@ -1,16 +1,18 @@
 {
   "schemaVersion": 1,
   "repository": "heossihq/bee-public",
-  "generatedAt": "2026-08-06T17:00:44Z",
+  "generatedAt": "2026-08-06T19:02:42Z",
   "source": {
     "repository": "heossihq/bee",
-    "commit": "a92da5c67da9ab67fb4f22e4e16311e4ba650f9e",
-    "contentDigest": "4770b8ca2768c555922a989be4bdd83daec59ec98b8335276ad4a1768cabc05a"
+    "commit": "e6fbb790a4c9f9475461fe86d35ac3fae91a0fc4",
+    "contentDigest": "f4859849cc8957b4b49fdb809ad6aa293ec792fb5aecd90ea2ff1521e1aa9f1b"
   },
   "packages": {
     "typescript": "0.2.0",
     "python": "0.6.10",
-    "mcp": "0.6.10"
+    "mcp": "0.6.10",
+    "codeCli": "0.1.3",
+    "vscodeExtension": "0.2.9"
   },
   "files": [
     {
@@ -42,8 +44,16 @@
       "sha256": "83a296562c70dc9840a4d98a08722fc92bad436ca32855c773f72cd28a611501"
     },
     {
+      "path": "PACKAGE-INDEX.json",
+      "sha256": "eddcff697c8224ef07c42cb309b18c15be66ecb454a4509d8b396ef1f7594b66"
+    },
+    {
+      "path": "PACKAGES.md",
+      "sha256": "71751a38d834e1e2e6f7b9684142b1ff1b9034bd70bb051e1721a933bb2ea97d"
+    },
+    {
       "path": "README.md",
-      "sha256": "d0f2074cd882d29b2442e150eaca942cbbe211735301736b0d142d81ec17c1c9"
+      "sha256": "f20b9e907d40628dafa4e7f89bc7c6a9024686f64119c5d42b8cae184505cc01"
     },
     {
       "path": "SBOM.spdx.json",
@@ -55,7 +65,7 @@
     },
     {
       "path": "SHA256SUMS",
-      "sha256": "3632e681f25ad6c7ec937191ee21153759ec25e820f21cb7b2afc6fd1ea6ec8c"
+      "sha256": "3ce34e204c44620c859ea7af24f29a1985938087d9be7089387f87c43c2d78cf"
     },
     {
       "path": "SUPPORT.md",
@@ -160,6 +170,10 @@
     {
       "path": "mcp/configs/vscode.json",
       "sha256": "85415b50f4c883350ace0ef47e6f7a4d0d2ac947c35c98f0f02e54655be2b41e"
+    },
+    {
+      "path": "scripts/verify_bee_package_index.py",
+      "sha256": "e8d1ba423ff0ba58e75fb89fbaf41044fd740a5917af8c6b50a0dd4a698539b7"
     },
     {
       "path": "sdks/python/README.md",
