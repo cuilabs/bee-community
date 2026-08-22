@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "repository": "heossihq/bee-public",
-  "generatedAt": "2026-08-06T23:46:15Z",
+  "generatedAt": "2026-08-18T15:50:21Z",
   "source": {
     "repository": "heossihq/bee",
-    "commit": "682b9a19d25df8e0766d4372d1a0c69fe96aefa0",
-    "contentDigest": "b0997907a024dd6ba01a00ea4eea8833c00eae450dcf0cc78f432c6f0bb491fc"
+    "commit": "9484c05b1d214af0219571c2d779fdff3d46195d",
+    "contentDigest": "7d9928071861900cb3fc57896c5f82efddcc9778de112c35f05141e72d7d9ea4"
   },
   "packages": {
     "typescript": "0.2.0",
@@ -65,7 +65,7 @@
     },
     {
       "path": "SHA256SUMS",
-      "sha256": "4dc048b426dfe7c05c068c3134358510dd18de36036c78fcf71fd719665962e4"
+      "sha256": "ca279c80df0b299de98c75961af854835c44cff24c377da31457e9e578b89da6"
     },
     {
       "path": "SUPPORT.md",
@@ -288,8 +288,16 @@
       "sha256": "e3fd464de9900f8a8cf4fdf6bc8740ea3339f70c542ff8e62866a907e15f2657"
     },
     {
+      "path": "sdks/typescript/tests/client-coverage.test.mjs",
+      "sha256": "6ae786ae2c404bdca949f7b5ecf7e07245c28036c55469040db2abeff4ec55c7"
+    },
+    {
       "path": "sdks/typescript/tests/client.test.mjs",
       "sha256": "4d447de1f20a0795c77051791fdc0b0ddfdd1a0051b77c6169678d098815f45e"
+    },
+    {
+      "path": "sdks/typescript/tests/quantum-local.test.mjs",
+      "sha256": "dd205be46e8876ced015ed96976bbf332f34169650d01edfe988ec130fac0ad2"
     },
     {
       "path": "sdks/typescript/tsconfig.cjs.json",
