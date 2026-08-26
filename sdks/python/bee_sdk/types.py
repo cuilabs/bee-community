@@ -154,7 +154,7 @@ CustomerModelId = Literal[
 
 # Internal trainable/deployment family names, mirror of bee/tiers.py. This is
 # not the public request model field; use CustomerModelId for API calls.
-ModelTier = Literal["cell", "brood", "comb", "buzz", "hive", "swarm", "enclave", "ignite"]
+ModelTier = Literal["cell", "brood", "comb", "buzz", "hive", "swarm", "enclave"]
 
 
 @dataclass

@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "repository": "heossihq/bee-public",
-  "generatedAt": "2026-08-23T09:26:12Z",
+  "generatedAt": "2026-08-26T10:07:53Z",
   "source": {
     "repository": "heossihq/bee",
-    "commit": "5552da60358a211efa1e53e84fada024b5873d99",
-    "contentDigest": "7efb5db64c965895ceb39573c2ccfb94de73f1451f4cf909d1e4c59dd74ea584"
+    "commit": "ee09f5f3f445103a034759f7e20ed6e8f43ff07f",
+    "contentDigest": "e594609d847fe7dca27a168e2c8295b869b8a7a5fae43c36f1289bb58db15fd6"
   },
   "packages": {
     "typescript": "0.2.0",
@@ -65,7 +65,7 @@
     },
     {
       "path": "SHA256SUMS",
-      "sha256": "18c2578966bf4b2315afbd70573ad0fa3a257dd58645eabe238ef620ab3cc514"
+      "sha256": "67072c62c8e7091268b28b6c4495943f975c1cfb9d01a344bb27876247e95abd"
     },
     {
       "path": "SUPPORT.md",
@@ -197,7 +197,7 @@
     },
     {
       "path": "sdks/python/bee_sdk/types.py",
-      "sha256": "8df12127d6b95b3e5752f629641d72114d3a206b025c73e721974142dbbee4f4"
+      "sha256": "6aa5d6ad70098b4a9086ed2e1411df4e6bcd019aceca2fc4c03602c862526a06"
     },
     {
       "path": "sdks/python/mcpb/icon.png",
