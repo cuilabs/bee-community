@@ -4,14 +4,18 @@
   // instead of failing with ERR_PACKAGE_PATH_NOT_EXPORTED, which is what a
   // clean-room install of 0.1.5 found.
   //
-  // "module": "CommonJS" forces classic resolution, which TypeScript 6 marks
-  // deprecated ahead of removing it in 7. Acknowledged explicitly rather than
-  // silenced by accident; when TS 7 lands this build moves to a bundler emit.
+  // TypeScript 7 removed `moduleResolution: node10`, which this build used to
+  // pair with the CommonJS emit. Migrated 2026-08-28 to the bundler resolution
+  // inherited from ./tsconfig.json - the move this file's previous comment
+  // planned for ("when TS 7 lands this build moves to a bundler emit").
+  // `module: CommonJS` with `moduleResolution: bundler` is explicitly allowed
+  // in TS 7 (TS5095 names commonjs among the permitted modules), so the emit
+  // stays CommonJS and only the resolution strategy changes. `dist/cjs/
+  // package.json` is still written with {"type":"commonjs"} by the build
+  // script, which is what actually marks the output CJS to Node.
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "CommonJS",
-    "moduleResolution": "Node",
-    "ignoreDeprecations": "6.0",
     "outDir": "./dist/cjs",
     "declaration": false,
     "declarationMap": false
