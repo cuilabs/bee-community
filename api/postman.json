@@ -95,6 +95,27 @@
       }
     },
     {
+      "name": "Validate computer-use host report",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bee_api_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"host\": {\n    \"protocol\": \"bee.computer.v1\",\n    \"host_id\": \"bee-desktop-local\",\n    \"host_type\": \"macos_desktop\",\n    \"version\": \"0.1.0\",\n    \"capabilities\": {\n      \"screen_observation\": {\n        \"state\": \"permission_required\",\n        \"reason\": \"macOS Screen Recording permission is required.\"\n      },\n      \"accessibility_tree\": {\n        \"state\": \"permission_required\",\n        \"reason\": \"macOS Accessibility permission is required.\"\n      },\n      \"pointer_input\": {\n        \"state\": \"permission_required\",\n        \"reason\": \"macOS Accessibility permission is required.\"\n      },\n      \"keyboard_input\": {\n        \"state\": \"permission_required\",\n        \"reason\": \"macOS Accessibility permission is required.\"\n      },\n      \"browser_navigation\": {\n        \"state\": \"unsupported\",\n        \"reason\": \"Desktop browser navigation must use an approved browser host.\"\n      }\n    },\n    \"evidence\": {\n      \"checked_at\": \"2026-09-01T00:00:00.000Z\",\n      \"checker\": \"bee-desktop-tauri\"\n    }\n  }\n}"
+        },
+        "url": "{{base_url}}/bee/computer/v1/host-reports"
+      }
+    },
+    {
       "name": "Create Quantum Reasoning Lab job",
       "request": {
         "method": "POST",

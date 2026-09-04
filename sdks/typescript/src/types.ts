@@ -253,6 +253,72 @@ export interface ProvenanceResult {
   chain: ProvenanceLink[];
 }
 
+export type ComputerUseCapabilityState =
+  | "supported"
+  | "unsupported"
+  | "permission_required"
+  | "not_verified";
+
+export interface ComputerUseCapability {
+  state: ComputerUseCapabilityState;
+  reason: string | null;
+}
+
+export interface ComputerUseHostReport {
+  protocol: "bee.computer.v1";
+  host_id: string;
+  host_type:
+    | "macos_desktop"
+    | "windows_desktop"
+    | "linux_desktop"
+    | "browser"
+    | "webview"
+    | "vscode"
+    | "cli"
+    | "ios"
+    | "android";
+  version: string;
+  capabilities: {
+    screen_observation: ComputerUseCapability;
+    accessibility_tree: ComputerUseCapability;
+    pointer_input: ComputerUseCapability;
+    keyboard_input: ComputerUseCapability;
+    browser_navigation: ComputerUseCapability;
+  };
+  evidence: { checked_at: string; checker: string };
+}
+
+export type ComputerUseAction =
+  | "observe_screen"
+  | "observe_accessibility_tree"
+  | "click"
+  | "double_click"
+  | "type_text"
+  | "key_press"
+  | "scroll"
+  | "navigate_url";
+
+export type ComputerUseApprovalClass = "none" | "observe" | "input" | "navigation" | "publication";
+
+export interface ComputerUseActionRequest {
+  protocol: "bee.computer.v1";
+  action_id: string;
+  host_id: string;
+  action: ComputerUseAction;
+  arguments: Record<string, unknown>;
+  approval: ComputerUseApprovalClass;
+  approved_at: string;
+  approval_token_digest: string;
+}
+
+export interface ComputerUseHostReportValidation {
+  protocol: "bee.computer.v1";
+  accepted: boolean;
+  host_id: string;
+  host_type: ComputerUseHostReport["host_type"];
+  request_action: ComputerUseAction | null;
+}
+
 export type BeeUpgradeReason =
   | "model_access_required"
   | "domain_tier_required"

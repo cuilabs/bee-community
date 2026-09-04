@@ -29,6 +29,9 @@ from typing import Any
 from .types import (
     ChatMessage,
     ChatResponse,
+    ComputerUseActionRequest,
+    ComputerUseHostReport,
+    ComputerUseHostReportValidation,
     CustomerModelId,
     Domain,
     QuantumProductId,
@@ -232,6 +235,17 @@ class Bee(_BaseClient):
             domain_intelligence=out.get("bee_domain_intelligence"),
             raw=out,
         )
+
+    def validate_computer_use_host_report(
+        self,
+        host: ComputerUseHostReport,
+        request: ComputerUseActionRequest | None = None,
+    ) -> ComputerUseHostReportValidation:
+        """Validate a real computer-use host report/action contract at Bee's gateway."""
+        body: dict[str, Any] = {"host": host}
+        if request is not None:
+            body["request"] = request
+        return self._request("POST", "/computer/v1/host-reports", body)
 
     def chat_stream(
         self,

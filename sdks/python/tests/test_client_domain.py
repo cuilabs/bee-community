@@ -73,6 +73,30 @@ class ClientDomainTest(unittest.TestCase):
             "cryptography_pqc",
         )
 
+    def test_computer_use_host_report_validation_uses_gateway_route(self) -> None:
+        bee = RecordingBee()
+        out = bee.validate_computer_use_host_report(
+            {
+                "protocol": "bee.computer.v1",
+                "host_id": "host-1",
+                "host_type": "macos_desktop",
+                "version": "1.0.0",
+                "capabilities": {
+                    "screen_observation": {"state": "supported", "reason": None},
+                    "accessibility_tree": {"state": "permission_required", "reason": "Accessibility"},
+                    "pointer_input": {"state": "permission_required", "reason": "Accessibility"},
+                    "keyboard_input": {"state": "permission_required", "reason": "Accessibility"},
+                    "browser_navigation": {"state": "unsupported", "reason": "not browser"},
+                },
+                "evidence": {"checked_at": "2026-09-01T00:00:00.000Z", "checker": "test"},
+            }
+        )
+
+        method, path, body = bee.calls[-1]
+        self.assertEqual((method, path), ("POST", "/computer/v1/host-reports"))
+        self.assertEqual(body["host"]["host_id"] if body else None, "host-1")
+        self.assertEqual(out["id"], "chatcmpl-test")
+
 
 if __name__ == "__main__":
     unittest.main()

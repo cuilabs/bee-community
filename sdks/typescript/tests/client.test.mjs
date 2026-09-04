@@ -80,3 +80,42 @@ test("structured upgrade decisions become typed action errors", async () => {
     },
   );
 });
+
+test("computer-use host reports use the governed validation route", async () => {
+  const calls = [];
+  const expected = {
+    protocol: "bee.computer.v1",
+    accepted: true,
+    host_id: "host-1",
+    host_type: "macos_desktop",
+    request_action: null,
+  };
+  const client = new BeeClient({
+    apiKey: "test-api-key-not-a-secret",
+    fetch: async (url, init) => {
+      calls.push({ url, init });
+      return new Response(JSON.stringify(expected), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    },
+  });
+  const host = {
+    protocol: "bee.computer.v1",
+    host_id: "host-1",
+    host_type: "macos_desktop",
+    version: "1.0.0",
+    capabilities: {
+      screen_observation: { state: "supported", reason: null },
+      accessibility_tree: { state: "permission_required", reason: "Accessibility" },
+      pointer_input: { state: "permission_required", reason: "Accessibility" },
+      keyboard_input: { state: "permission_required", reason: "Accessibility" },
+      browser_navigation: { state: "unsupported", reason: "not browser" },
+    },
+    evidence: { checked_at: "2026-09-01T00:00:00.000Z", checker: "test" },
+  };
+
+  assert.deepEqual(await client.computerUse.validateHostReport({ host }), expected);
+  assert.equal(calls[0].url, "https://api.bee.heossi.com/bee/computer/v1/host-reports");
+  assert.equal(JSON.parse(calls[0].init.body).host.host_id, "host-1");
+});

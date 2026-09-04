@@ -30,6 +30,9 @@ import type {
   ChatCompletionChunk,
   ChatCompletionCreateParams,
   ChatMessage,
+  ComputerUseActionRequest,
+  ComputerUseHostReport,
+  ComputerUseHostReportValidation,
   ModelsListResponse,
   ProvenanceResult,
   QuantumReasoningCapabilities,
@@ -66,6 +69,7 @@ export class BeeClient {
   readonly quantumReasoning: QuantumReasoningNamespace;
   readonly provenance: ProvenanceNamespace;
   readonly usage: UsageNamespace;
+  readonly computerUse: ComputerUseNamespace;
 
   constructor(opts: BeeClientOptions) {
     if (!opts.apiKey || typeof opts.apiKey !== "string") {
@@ -88,6 +92,7 @@ export class BeeClient {
     this.quantumReasoning = new QuantumReasoningNamespace(this);
     this.provenance = new ProvenanceNamespace(this);
     this.usage = new UsageNamespace(this);
+    this.computerUse = new ComputerUseNamespace(this);
   }
 
   /** Internal - request wrapper with timeout, auth header, and structured error mapping. */
@@ -206,6 +211,23 @@ class ModelsNamespace {
   async list(): Promise<ModelsListResponse> {
     const resp = await this.client._request("GET", "/models", undefined, "application/json");
     return (await resp.json()) as ModelsListResponse;
+  }
+}
+
+class ComputerUseNamespace {
+  constructor(private readonly client: BeeClient) {}
+
+  async validateHostReport(params: {
+    host: ComputerUseHostReport;
+    request?: ComputerUseActionRequest;
+  }): Promise<ComputerUseHostReportValidation> {
+    const resp = await this.client._request(
+      "POST",
+      "/computer/v1/host-reports",
+      params,
+      "application/json",
+    );
+    return (await resp.json()) as ComputerUseHostReportValidation;
   }
 }
 

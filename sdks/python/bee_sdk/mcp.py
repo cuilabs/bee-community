@@ -27,8 +27,9 @@ MCP client config (e.g. Claude Desktop / Cursor / VS Code)::
 Transports: stdio by default, plus request/response Streamable HTTP via
 ``bee-mcp --http PORT`` for remote or self-hosted deployments.
 
-14 tools (chat, code, security, research, provenance, usage, documents,
-memory, and Quantum Reasoning Lab) and 4 resources (+ a document template).
+15 tools (chat, code, security, research, provenance, usage, documents,
+memory, Quantum Reasoning Lab, and governed computer-use validation) and
+4 resources (+ a document template).
 Every hosted operation is authenticated, tenant-scoped, plan/policy gated,
 and metered by the Bee gateway.
 """
@@ -500,6 +501,42 @@ TOOLS += [
     },
 ]
 
+TOOLS += [
+    {
+        "name": "bee_computer_use_validate_host",
+        "title": "Validate Computer-Use Host",
+        "description": (
+            "Use to validate a real Bee computer-use host capability report and optional "
+            "governed action request at the hosted gateway. This tool does not observe a "
+            "screen, control input, automate a device, or create a local driver; execution "
+            "must happen in a verified host runtime with explicit capability evidence."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "host": {
+                    "type": "object",
+                    "description": "Bee computer-use host report using protocol bee.computer.v1.",
+                    "additionalProperties": True,
+                },
+                "request": {
+                    "type": "object",
+                    "description": "Optional Bee computer-use action request with approval evidence.",
+                    "additionalProperties": True,
+                },
+            },
+            "required": ["host"],
+        },
+        "annotations": {
+            "readOnlyHint": False,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": True,
+            "title": "Validate Computer-Use Host",
+        },
+    },
+]
+
 RESOURCES = [
     {
         "uri": "bee://status",
@@ -544,9 +581,17 @@ RESOURCE_TEMPLATES = [
 
 
 def handle_tool_call(client: Bee, name: str, arguments: dict[str, Any]) -> str:
-    """Execute one of the 14 tools by forwarding to the hosted Bee
+    """Execute one of the hosted tools by forwarding to the hosted Bee
     gateway. System prompts mirror apps/api/src/lib/mcp-tools.ts + the local-core
     server so behaviour is identical across all three surfaces."""
+    if name == "bee_computer_use_validate_host":
+        return json.dumps(
+            client.validate_computer_use_host_report(
+                arguments["host"],
+                request=arguments.get("request"),
+            )
+        )
+
     if name == "bee_quantum_reasoning_run":
         job = client.quantum_reasoning_create(
             prompt=arguments["prompt"],

@@ -77,6 +77,68 @@ QuantumReasoningRealRequestStatus = Literal[
     "released_after_failure",
 ]
 
+ComputerUseCapabilityState = Literal[
+    "supported",
+    "unsupported",
+    "permission_required",
+    "not_verified",
+]
+ComputerUseHostType = Literal[
+    "macos_desktop",
+    "windows_desktop",
+    "linux_desktop",
+    "browser",
+    "webview",
+    "vscode",
+    "cli",
+    "ios",
+    "android",
+]
+ComputerUseAction = Literal[
+    "observe_screen",
+    "observe_accessibility_tree",
+    "click",
+    "double_click",
+    "type_text",
+    "key_press",
+    "scroll",
+    "navigate_url",
+]
+ComputerUseApprovalClass = Literal["none", "observe", "input", "navigation", "publication"]
+
+
+class ComputerUseCapability(TypedDict):
+    state: ComputerUseCapabilityState
+    reason: str | None
+
+
+class ComputerUseHostReport(TypedDict):
+    protocol: Literal["bee.computer.v1"]
+    host_id: str
+    host_type: ComputerUseHostType
+    version: str
+    capabilities: dict[str, ComputerUseCapability]
+    evidence: dict[str, str]
+
+
+class ComputerUseActionRequest(TypedDict):
+    protocol: Literal["bee.computer.v1"]
+    action_id: str
+    host_id: str
+    action: ComputerUseAction
+    arguments: dict[str, object]
+    approval: ComputerUseApprovalClass
+    approved_at: str
+    approval_token_digest: str
+
+
+class ComputerUseHostReportValidation(TypedDict):
+    protocol: Literal["bee.computer.v1"]
+    accepted: bool
+    host_id: str
+    host_type: ComputerUseHostType
+    request_action: ComputerUseAction | None
+
 
 class QuantumReasoningCandidate(TypedDict):
     index: int

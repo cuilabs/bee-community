@@ -331,6 +331,49 @@
         }
       }
     },
+    "/bee/computer/v1/host-reports": {
+      "post": {
+        "operationId": "validateBeeComputerUseHostReport",
+        "summary": "Validate a governed computer-use host report",
+        "description": "Validates a bee.computer.v1 host report and optional approved action request. The API does not perform desktop input; execution remains on the real local host that holds OS permissions.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "host"
+                ],
+                "properties": {
+                  "host": {
+                    "$ref": "#/components/schemas/ComputerUseHostReport"
+                  },
+                  "request": {
+                    "$ref": "#/components/schemas/ComputerUseActionRequest"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Host report accepted"
+          },
+          "400": {
+            "description": "Invalid host report, action request, or approval class"
+          },
+          "401": {
+            "description": "Missing or invalid API credential"
+          },
+          "403": {
+            "description": "API key missing computer:actions:write scope"
+          }
+        }
+      }
+    },
     "/bee/agents/runs/{runId}": {
       "get": {
         "operationId": "getBeeAgentRun",
@@ -1125,6 +1168,178 @@
             "default": 3
           }
         }
+      },
+      "ComputerUseCapability": {
+        "type": "object",
+        "required": [
+          "state",
+          "reason"
+        ],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "supported",
+              "unsupported",
+              "permission_required",
+              "not_verified"
+            ]
+          },
+          "reason": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComputerUseHostReport": {
+        "type": "object",
+        "required": [
+          "protocol",
+          "host_id",
+          "host_type",
+          "version",
+          "capabilities",
+          "evidence"
+        ],
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "bee.computer.v1"
+          },
+          "host_id": {
+            "type": "string"
+          },
+          "host_type": {
+            "type": "string",
+            "enum": [
+              "macos_desktop",
+              "windows_desktop",
+              "linux_desktop",
+              "browser",
+              "webview",
+              "vscode",
+              "cli",
+              "ios",
+              "android"
+            ]
+          },
+          "version": {
+            "type": "string"
+          },
+          "capabilities": {
+            "type": "object",
+            "required": [
+              "screen_observation",
+              "accessibility_tree",
+              "pointer_input",
+              "keyboard_input",
+              "browser_navigation"
+            ],
+            "properties": {
+              "screen_observation": {
+                "$ref": "#/components/schemas/ComputerUseCapability"
+              },
+              "accessibility_tree": {
+                "$ref": "#/components/schemas/ComputerUseCapability"
+              },
+              "pointer_input": {
+                "$ref": "#/components/schemas/ComputerUseCapability"
+              },
+              "keyboard_input": {
+                "$ref": "#/components/schemas/ComputerUseCapability"
+              },
+              "browser_navigation": {
+                "$ref": "#/components/schemas/ComputerUseCapability"
+              }
+            },
+            "additionalProperties": false
+          },
+          "evidence": {
+            "type": "object",
+            "required": [
+              "checked_at",
+              "checker"
+            ],
+            "properties": {
+              "checked_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "checker": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "ComputerUseActionRequest": {
+        "type": "object",
+        "required": [
+          "protocol",
+          "action_id",
+          "host_id",
+          "action",
+          "arguments",
+          "approval",
+          "approved_at",
+          "approval_token_digest"
+        ],
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "bee.computer.v1"
+          },
+          "action_id": {
+            "type": "string"
+          },
+          "host_id": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "observe_screen",
+              "observe_accessibility_tree",
+              "click",
+              "double_click",
+              "type_text",
+              "key_press",
+              "scroll",
+              "navigate_url"
+            ]
+          },
+          "arguments": {
+            "type": "object"
+          },
+          "approval": {
+            "type": "string",
+            "enum": [
+              "none",
+              "observe",
+              "input",
+              "navigation",
+              "publication"
+            ]
+          },
+          "approved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "approval_token_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
       },
       "QuantumReasoningJobCreate": {
         "type": "object",

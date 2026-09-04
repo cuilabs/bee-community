@@ -21,6 +21,7 @@ EXPECTED_TOOLS = [
     "bee_quantum_reasoning_jobs",
     "bee_quantum_reasoning_get",
     "bee_quantum_reasoning_remove",
+    "bee_computer_use_validate_host",
 ]
 
 EXPECTED_MCP_DOMAINS = [
@@ -75,7 +76,7 @@ class MCPCatalogTest(unittest.TestCase):
             read_only += annotations["readOnlyHint"] is True
             writes += annotations["readOnlyHint"] is False
         self.assertEqual(read_only, 10)
-        self.assertEqual(writes, 4)
+        self.assertEqual(writes, 5)
 
     def test_resources_are_exact_and_tenant_data_is_described(self) -> None:
         self.assertEqual(
