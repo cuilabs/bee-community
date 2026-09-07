@@ -64,7 +64,7 @@
       "role": "proprietary-vscode-extension",
       "source": null,
       "sourceAvailability": "proprietary",
-      "version": "0.2.10"
+      "version": "0.2.12"
     }
   ],
   "canonicalSource": "https://github.com/heossihq/bee-public",
