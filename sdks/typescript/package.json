@@ -48,8 +48,8 @@
   "scripts": {
     "build": "tsc && tsc -p tsconfig.cjs.json && node -e \"require('fs').writeFileSync('dist/cjs/package.json', JSON.stringify({type:'commonjs'})+'\\n')\"",
     "typecheck": "tsc --noEmit",
-    "test": "pnpm run build && node --test tests/*.test.mjs",
-    "prepublishOnly": "pnpm run build"
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "typescript": "^7.0.2"
